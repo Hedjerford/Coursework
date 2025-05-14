@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using TMPro;
 
 public class TreeCounter : MonoBehaviour
@@ -10,8 +10,12 @@ public class TreeCounter : MonoBehaviour
     public void AddTree()
     {
         plantedTrees++;
-        plantedTrees = Mathf.Min(plantedTrees, targetTrees); // чтобы не превысить максимум
+        plantedTrees = Mathf.Min(plantedTrees, targetTrees); // С‡С‚РѕР±С‹ РЅРµ РїСЂРµРІС‹СЃРёС‚СЊ РјР°РєСЃРёРјСѓРј
         UpdateUI();
+        if (plantedTrees == 10)
+        {
+            AchievementManager.Instance.Unlock("РЎРїР°СЃР°С‚РµР»СЊ Oв‚‚");
+        }
     }
 
     private void Start()
@@ -21,6 +25,6 @@ public class TreeCounter : MonoBehaviour
 
     private void UpdateUI()
     {
-        counterText.text = $"Деревьев посажено: {plantedTrees} / {targetTrees}";
+        counterText.text = $"Р”РµСЂРµРІСЊРµРІ РїРѕСЃР°Р¶РµРЅРѕ: {plantedTrees} / {targetTrees}";
     }
 }
