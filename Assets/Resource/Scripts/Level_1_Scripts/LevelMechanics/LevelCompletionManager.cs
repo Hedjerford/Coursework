@@ -64,6 +64,8 @@ public class LevelCompletionManager : MonoBehaviour
 
     private void ShowStars()
     {
+        FindObjectOfType<GameTimer>().StopTimer();
+
         panel.SetActive(false);
         starsPanel.SetActive(true);
 

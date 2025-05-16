@@ -12,7 +12,7 @@ public class TreeCounter : MonoBehaviour
         plantedTrees++;
         plantedTrees = Mathf.Min(plantedTrees, targetTrees); // чтобы не превысить максимум
         UpdateUI();
-        if (plantedTrees == 10)
+        if (plantedTrees > 5 )
         {
             AchievementManager.Instance.Unlock("Спасатель O₂");
         }

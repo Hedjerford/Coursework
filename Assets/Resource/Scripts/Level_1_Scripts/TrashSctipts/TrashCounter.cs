@@ -17,7 +17,10 @@ public class TrashCounter : MonoBehaviour
     {
         collectedCount++;
         UpdateUI();
-
+        if (collectedCount >= 10)
+        {
+            AchievementManager.Instance.Unlock("—борщик");
+        }
     }
 
     private void UpdateUI()

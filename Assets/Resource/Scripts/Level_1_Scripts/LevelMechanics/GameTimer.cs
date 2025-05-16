@@ -1,29 +1,36 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
 public class GameTimer : MonoBehaviour
 {
-    public float timeRemaining = 180f; // 3 минуты
+    public float timeRemaining = 180f; // 3 РјРёРЅСѓС‚С‹
     public TextMeshProUGUI timerText;
     public CanvasGroup blackOverlay;
     public GameObject resultPanel;
     public LevelCompletionManager levelCompletionManager;
 
     private bool levelEnded = false;
+    private bool isRunning = true;
 
     void Update()
     {
-        if (levelEnded) return;
+        if (!isRunning) return;
 
         timeRemaining -= Time.deltaTime;
+        timeRemaining = Mathf.Max(0, timeRemaining);
         UpdateTimerUI();
 
         if (timeRemaining <= 0)
         {
-            timeRemaining = 0;
+            isRunning = false;
             EndLevel();
         }
+    }
+
+    public void StopTimer()
+    {
+        isRunning = false;
     }
 
     void UpdateTimerUI()
@@ -52,6 +59,6 @@ public class GameTimer : MonoBehaviour
         }
 
         blackOverlay.alpha = 1;
-        levelCompletionManager.ShowCompletionResult(); // Подсчёт звёзд и показ панели
+        levelCompletionManager.ShowCompletionResult(); // РџРѕРґСЃС‡С‘С‚ Р·РІС‘Р·Рґ Рё РїРѕРєР°Р· РїР°РЅРµР»Рё
     }
 }
