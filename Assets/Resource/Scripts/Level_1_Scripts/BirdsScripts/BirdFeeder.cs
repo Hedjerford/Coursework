@@ -6,7 +6,6 @@ public class BirdFeeder : MonoBehaviour
     private bool hasBeenFed = false;
 
     public Animator animator;
-
     private void Update()
     {
         if (playerInRange && !hasBeenFed && Input.GetKeyDown(KeyCode.E))
@@ -14,6 +13,8 @@ public class BirdFeeder : MonoBehaviour
             hasBeenFed = true;
             FindObjectOfType<BirdCounter>().FeedBird();
             animator.SetBool("Eating", true);
+
+
         }
     }
 

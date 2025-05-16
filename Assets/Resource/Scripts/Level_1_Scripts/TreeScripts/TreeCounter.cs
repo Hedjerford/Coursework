@@ -16,7 +16,9 @@ public class TreeCounter : MonoBehaviour
         {
             AchievementManager.Instance.Unlock("Спасатель O₂");
         }
+      
     }
+
 
     private void Start()
     {

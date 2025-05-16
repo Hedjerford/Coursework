@@ -6,7 +6,7 @@ public class TrashCounter : MonoBehaviour
     public TextMeshProUGUI trashText;
     public int totalTrash = 5;
 
-    private int collectedCount = 0;
+    public int collectedCount = 0;
 
     private void Start()
     {
@@ -17,6 +17,7 @@ public class TrashCounter : MonoBehaviour
     {
         collectedCount++;
         UpdateUI();
+
     }
 
     private void UpdateUI()

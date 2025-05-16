@@ -17,6 +17,8 @@ public class BirdCounter : MonoBehaviour
         {
             AchievementManager.Instance.Unlock("Бренда Фрикер");
         }
+        FindObjectOfType<LevelCompletionManager>().MarkBirdFed();
+
     }
 
     private void Start()

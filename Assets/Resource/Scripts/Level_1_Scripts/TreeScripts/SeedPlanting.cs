@@ -11,6 +11,7 @@ public class SeedPlanting : MonoBehaviour
 
     void Update()
     {
+
         Vector3 worldPos = transform.position;
         currentCell = plantingMap.WorldToCell(worldPos);
 
@@ -39,6 +40,7 @@ public class SeedPlanting : MonoBehaviour
             FindObjectOfType<TreeCounter>().AddTree();
             InteractionHintController.Instance.ShowHint(false);
             isOnPlantingSpot = false;
+            FindObjectOfType<LevelCompletionManager>().MarkTreePlanted();
         }
     }
 }
