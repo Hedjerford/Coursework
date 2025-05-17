@@ -17,8 +17,41 @@ public class DialogueController : MonoBehaviour
     private bool isTyping = false;
     public GameObject continueHint;
 
-    private void Start()
+    [Header("Диалоги")]
+    [TextArea(3, 10)] public string[] firstVisitLines;
+    [TextArea(3, 10)] public string[] BadDialogue; // Если игрок плохо выполнил задание
+    [TextArea(3, 10)] public string[] GoodDialogue; // Если игрок выполнил задание хорошо
+
+    private void Awake()
     {
+        PlayerPrefs.DeleteAll();
+        if (!PlayerPrefs.HasKey("HasLaunched"))
+        {
+            PlayerPrefs.SetInt("HQDialogueStage", 1); // начальный диалог
+            PlayerPrefs.SetInt("HasLaunched", 1);     // пометка, что уже запускали
+            PlayerPrefs.Save();
+            
+        }
+  
+
+    int stage = PlayerPrefs.GetInt("HQDialogueStage", 1); // по умолчанию 1
+
+        switch (stage)
+        {
+            case 1:
+                dialogueLines = firstVisitLines;
+                break;
+            case 2:
+                dialogueLines = BadDialogue;
+                break;
+            case 3:
+                dialogueLines = GoodDialogue;
+                break;
+            default:
+                dialogueLines = firstVisitLines;
+                break;
+        }
+
         StartTypingLine();
         continueHint.SetActive(true);
     }
@@ -72,14 +105,25 @@ public class DialogueController : MonoBehaviour
 
             StartTypingLine();
         }
-            else
+        else
         {
             dialogueText.text = "";
             continueHint.SetActive(false);
-            GameObject.FindObjectOfType<ScreenFader>().FadeOutAndLoadScene();
 
-            // Загрузка следующей сцены
-            GameObject.FindObjectOfType<ScreenFader>().FadeOutAndLoadScene(); // название сцены точно как в файле
+            int stage = PlayerPrefs.GetInt("HQDialogueStage", 1);
+            var fader = FindObjectOfType<ScreenFader>();
+
+            if (stage == 1)
+            {
+                fader.nextSceneName = "TutorialScene"; 
+                fader.FadeOutAndLoadScene();
+            }
+            else if (stage == 2 || stage == 3 )
+            {
+                fader.nextSceneName = "SecondDay"; 
+                fader.FadeOutAndLoadScene();
+            }
         }
+
     }
 }

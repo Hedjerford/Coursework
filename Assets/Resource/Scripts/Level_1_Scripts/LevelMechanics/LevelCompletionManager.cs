@@ -103,7 +103,16 @@ public class LevelCompletionManager : MonoBehaviour
 
     public void Continue()
     {
-        // Здесь можешь указать конкретную сцену по имени или по индексу
-        SceneManager.LoadScene("NextLevelScene"); // Замени на нужное имя
+        if (treeCounter.plantedTrees >= 5 && birdCounter.fedBirds >= 3 && trashCounter.collectedCount >= 8)
+        {
+            PlayerPrefs.SetInt("HQDialogueStage", 3); // диалог 3
+        }
+        else
+        {
+            PlayerPrefs.SetInt("HQDialogueStage", 2); // диалог 2
+        }
+
+        //PlayerPrefs.Save(); // обязательно перед загрузкой сцены
+        SceneManager.LoadScene("Headquarters_Cutscene"); // подставь нужное имя
     }
 }

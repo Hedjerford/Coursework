@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameTimer : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class GameTimer : MonoBehaviour
             isRunning = false;
             EndLevel();
         }
+       
+
     }
 
     public void StopTimer()
