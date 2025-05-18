@@ -139,6 +139,7 @@ public class SecondDayDialogue : MonoBehaviour
         AchievementManager.Instance.Unlock("Второй день");
 
         // 🧍 Заставим NPC следовать
-        FindObjectOfType<NPCFollower>().FollowPlayer();
+        GameObject.FindObjectOfType<FollowPlayer>().StartFollowing();
+
     }
 }
