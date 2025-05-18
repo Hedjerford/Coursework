@@ -6,10 +6,18 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody2D rb;
     public Animator animator;
 
-    Vector2 movement;
+    private Vector2 movement;
+    private bool canMove = true;
 
     void Update()
     {
+        if (!canMove)
+        {
+            movement = Vector2.zero;
+            animator.SetFloat("Speed", 0);
+            return;
+        }
+
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
@@ -20,6 +28,20 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        if (canMove)
+        {
+            rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+        }
+    }
+
+    public void DisableMovement()
+    {
+        canMove = false;
+        movement = Vector2.zero;
+    }
+
+    public void EnableMovement()
+    {
+        canMove = true;
     }
 }

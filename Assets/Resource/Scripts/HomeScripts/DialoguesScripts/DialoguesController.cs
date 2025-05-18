@@ -24,7 +24,7 @@ public class DialogueController : MonoBehaviour
 
     private void Awake()
     {
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
         if (!PlayerPrefs.HasKey("HasLaunched"))
         {
             PlayerPrefs.SetInt("HQDialogueStage", 1); // начальный диалог
