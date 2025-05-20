@@ -19,6 +19,7 @@ public class SecondDayDialogue : MonoBehaviour
     private bool isTyping = false;
     private bool dialogueFinished = false;
     private PlayerMovement player;
+    public FireMissionController fireMission;
 
     private void Start()
     {
@@ -132,14 +133,12 @@ public class SecondDayDialogue : MonoBehaviour
         if (player != null)
             player.EnableMovement();
 
-        // 🔥 Запускаем миссию
-        FindObjectOfType<FireMission>().StartFireMission();
 
         // 🏆 Выдаём ачивку
         AchievementManager.Instance.Unlock("Второй день");
-
-        // 🧍 Заставим NPC следовать
-        GameObject.FindObjectOfType<FollowPlayer>().StartFollowing();
-
+        if (fireMission != null)
+            fireMission.StartMission();
+        else
+            Debug.LogWarning("FireMissionController не назначен!");
     }
 }
