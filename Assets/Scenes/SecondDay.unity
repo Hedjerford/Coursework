@@ -2829,9 +2829,16 @@ MonoBehaviour:
   additionalFirePrefab: {fileID: 301940709867849570, guid: 73b8c343191393f4ba3c775d680b5c81, type: 3}
   fireSpawnPoints:
   - {fileID: 0}
-  missionDuration: 60
+  missionDuration: 5
   requiredExtinguishes: 10
   fireUI: {fileID: 176120}
+  sergeyFollow: {fileID: 1903455824}
+  playerTarget: {fileID: 1023681444}
+  dialogue: {fileID: 550655751}
+  successDialogueLines:
+  - "\u041E\u0442\u043B\u0438\u0447\u043D\u043E \u0441\u043F\u0440\u0430\u0432\u0438\u043B\u0438\u0441\u044C "
+  failDialogueLines:
+  - "\u041D\u0443 \u0438 \u043A\u0430\u043B"
 --- !u!1 &395029446
 GameObject:
   m_ObjectHideFlags: 0
@@ -5479,7 +5486,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1203848736
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5498,7 +5505,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 250}
+  m_SizeDelta: {x: 2319, y: 250}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1203848737
 MonoBehaviour:
@@ -30641,7 +30648,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -30699,6 +30706,53 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!1 &1908327225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1908327226}
+  - component: {fileID: 1908327227}
+  m_Layer: 0
+  m_Name: NextMissionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1908327226
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908327225}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.3422527, y: 0.2577769, z: 0.020930523}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1908327227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908327225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7374711cb06d0074b9f16aeedd3e44b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionSceneNames:
+  - ForestFire
+  - Animal
 --- !u!1 &1938614865 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 301940709867849570, guid: 73b8c343191393f4ba3c775d680b5c81, type: 3}
@@ -31091,3 +31145,4 @@ SceneRoots:
   - {fileID: 1452376663}
   - {fileID: 92043296}
   - {fileID: 359599204}
+  - {fileID: 1908327226}

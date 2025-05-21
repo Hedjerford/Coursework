@@ -56,6 +56,25 @@ public class SecondDayDialogue : MonoBehaviour
         isTyping = false;
         continueHint.SetActive(true);
     }
+    public void StartCustomDialogue(string[] lines)
+    {
+        Debug.Log($"📢 Запускаем кастомный диалог с {lines.Length} строками");
+
+        dialogueLines = lines;
+        currentLine = 0;
+        dialogueFinished = false;
+
+        if (player == null)
+            player = FindObjectOfType<PlayerMovement>();
+
+        player?.DisableMovement();
+
+        StartCoroutine(SlideBarsIn());
+        StartTypingLine();
+    }
+
+
+
 
     private void Update()
     {
@@ -111,6 +130,18 @@ public class SecondDayDialogue : MonoBehaviour
 
     IEnumerator SlideBarsOut()
     {
+        if (player != null)
+            player.EnableMovement();
+
+        // Вернуть дистанцию и движение Сергею
+        var sergey = FindObjectOfType<FollowPlayerPathfinding>();
+        if (sergey != null)
+        {
+            sergey.SetStoppingDistance(1.5f);
+            sergey.EnableMovement(true);
+        }
+
+        FindObjectOfType<FollowPlayerPathfinding>()?.SetStoppingDistance(1.5f);
         float t = 0f;
         Vector2 topEnd = new Vector2(0, topBar.rect.height);
         Vector2 botEnd = new Vector2(0, -bottomBar.rect.height);

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class FireMissionController : MonoBehaviour
 {
@@ -14,6 +15,12 @@ public class FireMissionController : MonoBehaviour
 
     public FireMissionUI fireUI;
 
+    public FollowPlayerPathfinding sergeyFollow;
+    public Transform playerTarget;
+    public SecondDayDialogue dialogue;
+    public string[] successDialogueLines;
+    public string[] failDialogueLines;
+
     private float timer;
     private int extinguishCount = 0;
     private bool hasWater = false;
@@ -22,18 +29,14 @@ public class FireMissionController : MonoBehaviour
 
     void Update()
     {
-        // ⏱ Обновляем таймер в UI
         if (fireUI != null)
             fireUI.SetTime(timer);
 
-        // ⛔ Не продолжаем, если миссия не запущена или провалена
         if (!missionStarted || missionFailed)
             return;
 
-        // ⌛ Уменьшаем время
         timer -= Time.deltaTime;
 
-        // ⏳ Проверяем таймер на завершение
         if (timer <= 0f)
         {
             if (extinguishCount < requiredExtinguishes)
@@ -42,10 +45,8 @@ public class FireMissionController : MonoBehaviour
                 CompleteMission();
         }
 
-        // 📍 Получаем позицию игрока
         Vector2 playerPos = FindObjectOfType<PlayerMovement>().transform.position;
 
-        // 💬 Показываем подсказки
         if (waterZone.OverlapPoint(playerPos) && !hasWater)
             InteractionHintController.Instance?.ShowHint(true);
         else if (fireZone.OverlapPoint(playerPos) && hasWater)
@@ -53,21 +54,18 @@ public class FireMissionController : MonoBehaviour
         else
             InteractionHintController.Instance?.ShowHint(false);
 
-        // 🎮 Обработка нажатия E
         if (Input.GetKeyDown(KeyCode.E))
         {
-            // 💧 Взять воду
             if (waterZone.OverlapPoint(playerPos) && !hasWater)
             {
                 hasWater = true;
-                Debug.Log("💧 Вода набрана");
+                Debug.Log("\uD83D\uDCA7 Вода набрана");
             }
-            // 🔥 Потушить огонь
             else if (fireZone.OverlapPoint(playerPos) && hasWater)
             {
                 hasWater = false;
                 extinguishCount++;
-                Debug.Log($"🔥 Потушено {extinguishCount}/{requiredExtinguishes}");
+                Debug.Log($"\uD83D\uDD25 Потушено {extinguishCount}/{requiredExtinguishes}");
 
                 if (fireUI != null)
                     fireUI.SetProgress(extinguishCount, requiredExtinguishes);
@@ -77,7 +75,6 @@ public class FireMissionController : MonoBehaviour
             }
         }
     }
-
 
     public void StartMission()
     {
@@ -103,42 +100,39 @@ public class FireMissionController : MonoBehaviour
         fireEffect.SetActive(false);
         InteractionHintController.Instance?.ShowHint(false);
 
-        Debug.Log("✅ Пожар потушен!");
-
         if (fireUI != null)
         {
             fireUI.SetProgress(extinguishCount, requiredExtinguishes);
             fireUI.SetVisible(false);
         }
+
+        sergeyFollow.SetStoppingDistance(0.2f);
+        StartCoroutine(WaitForSergeyThenStartDialogue(successDialogueLines));
+        StartCoroutine(StartNextMissionAfterDialogue());
     }
 
     private void FailMission()
     {
         missionStarted = false;
         missionFailed = true;
-
-        // 🔕 Отключаем подсказку
         InteractionHintController.Instance?.ShowHint(false);
 
-        // ❌ Скрываем UI прогресса
         if (fireUI != null)
             fireUI.SetVisible(false);
 
         Debug.Log("❌ Миссия провалена. Пожар вышел из-под контроля");
 
-        // 🔥 Расширение зоны огня и блокировка прохода
         var box = fireZone as BoxCollider2D;
         if (box != null)
         {
-            box.size *= 2f;                      // Увеличиваем зону
+            box.size *= 2f;
             box.offset = Vector2.zero;
-            box.isTrigger = false;               // Делаем коллайдер твёрдым
+            box.isTrigger = false;
 
-            // 🔥 Спавн огня по всей площади коллайдера
             Vector2 size = box.size;
             Vector2 center = box.bounds.center;
-            float step = 2f;                     // Шаг между точками спавна
-            int maxFires = 200;                  // Лимит огней
+            float step = 2f;
+            int maxFires = 200;
             int count = 0;
 
             for (float x = -size.x / 2f; x <= size.x / 2f; x += step)
@@ -156,11 +150,43 @@ public class FireMissionController : MonoBehaviour
                     break;
             }
 
-            Debug.Log($"🔥 Заспавнено {count} очагов огня по зоне {box.size}");
+            Debug.Log($"\uD83D\uDD25 Заспавнено {count} очагов огня по зоне {box.size}");
         }
 
-        // ✅ Также можно запустить экранный эффект, тряску камеры и т.п.
+        sergeyFollow.SetStoppingDistance(0.2f);
+        StartCoroutine(WaitForSergeyThenStartDialogue(failDialogueLines));
+        StartCoroutine(StartNextMissionAfterDialogue());
     }
 
+    private IEnumerator WaitForSergeyThenStartDialogue(string[] lines)
+    {
+        Transform sergey = sergeyFollow.transform;
+        Vector3 target = playerTarget.position;
 
+        // Если Сергей уже рядом — запускаем диалог сразу
+        if (Vector3.Distance(sergey.position, target) <= 0.3f)
+        {
+            if (dialogue != null)
+                dialogue.StartCustomDialogue(lines);
+
+            yield break;
+        }
+
+        // Иначе ждём подхода
+        while (Vector3.Distance(sergey.position, target) > 0.3f)
+        {
+            yield return null;
+        }
+
+        if (dialogue != null)
+            dialogue.StartCustomDialogue(lines);
+    }
+    private IEnumerator StartNextMissionAfterDialogue()
+    {
+        yield return new WaitForSeconds(2f); // Лучше заменить на проверку завершения диалога
+
+        Debug.Log("▶ Запускаем следующую миссию...");
+        // Пример: можно вызвать сцену, триггер или менеджер
+        NextMissionManager.Instance?.StartNext();
+    }
 }

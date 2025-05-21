@@ -5,15 +5,32 @@ public class FollowPlayerPathfinding : MonoBehaviour
 {
     public Transform player;
     public float speed = 2f;
-    public float stoppingDistance = 1.5f; // минимальна€ дистанци€
+    public float stoppingDistance = 1.5f;
 
     private NavMeshPath path;
     private int currentCorner = 0;
+    private bool canMove = true;
 
     void Start()
     {
         path = new NavMeshPath();
         InvokeRepeating(nameof(UpdatePath), 0f, 0.5f);
+    }
+
+    public void SetTarget(Transform newTarget)
+    {
+        player = newTarget;
+        UpdatePath();
+    }
+
+    public void SetStoppingDistance(float newDistance)
+    {
+        stoppingDistance = newDistance;
+    }
+
+    public void EnableMovement(bool enable)
+    {
+        canMove = enable;
     }
 
     void UpdatePath()
@@ -27,6 +44,8 @@ public class FollowPlayerPathfinding : MonoBehaviour
 
     void Update()
     {
+        if (!canMove) return;
+
         if (path == null || path.corners.Length == 0 || currentCorner >= path.corners.Length)
             return;
 
@@ -35,7 +54,6 @@ public class FollowPlayerPathfinding : MonoBehaviour
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        // “олько если дальше, чем дистанци€ остановки
         if (distanceToPlayer > stoppingDistance)
         {
             transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
@@ -46,7 +64,6 @@ public class FollowPlayerPathfinding : MonoBehaviour
             }
         }
 
-        // —брос поворота и Z
         transform.rotation = Quaternion.identity;
         Vector3 pos = transform.position;
         pos.z = 0f;
