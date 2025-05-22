@@ -29933,7 +29933,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: -125}
-  m_SizeDelta: {x: 1920, y: 250}
+  m_SizeDelta: {x: 2277.24, y: 302.43}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1759797299
 MonoBehaviour:
@@ -30750,9 +30750,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7374711cb06d0074b9f16aeedd3e44b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missionSceneNames:
-  - ForestFire
-  - Animal
+  missions: []
 --- !u!1 &1938614865 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 301940709867849570, guid: 73b8c343191393f4ba3c775d680b5c81, type: 3}

@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class NextMissionManager : MonoBehaviour
 {
     public static NextMissionManager Instance;
 
-    [Header("Список миссий (по порядку)")]
-    public string[] missionSceneNames;
+    [Header("Миссии по порядку")]
+    public GameObject[] missions;
 
     private int currentIndex = -1;
 
@@ -15,7 +14,7 @@ public class NextMissionManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject); // если надо сохранить при переходе сцены
         }
         else
         {
@@ -25,31 +24,42 @@ public class NextMissionManager : MonoBehaviour
 
     public void StartNext()
     {
+        // Деактивируем предыдущую
+        if (currentIndex >= 0 && currentIndex < missions.Length)
+        {
+            missions[currentIndex].SetActive(false);
+        }
+
         currentIndex++;
 
-        if (currentIndex < missionSceneNames.Length)
+        if (currentIndex < missions.Length)
         {
-            string nextScene = missionSceneNames[currentIndex];
-            Debug.Log($"▶ Загружаем следующую миссию: {nextScene}");
-            SceneManager.LoadScene(nextScene);
+            Debug.Log($"▶ Активируем миссию #{currentIndex + 1}: {missions[currentIndex].name}");
+            missions[currentIndex].SetActive(true);
         }
         else
         {
-            Debug.Log("🎉 Все миссии завершены! Можно показать экран победы или титры.");
-            // Можно вызвать финальную сцену или UI
+            Debug.Log("🎉 Все миссии завершены!");
+            // Тут можно включить финальный экран или титры
         }
     }
 
     public void RestartCurrent()
     {
-        if (currentIndex >= 0 && currentIndex < missionSceneNames.Length)
+        if (currentIndex >= 0 && currentIndex < missions.Length)
         {
-            SceneManager.LoadScene(missionSceneNames[currentIndex]);
+            missions[currentIndex].SetActive(false);
+            missions[currentIndex].SetActive(true);
         }
     }
 
     public void ResetMissions()
     {
+        foreach (var m in missions)
+        {
+            m.SetActive(false);
+        }
+
         currentIndex = -1;
     }
 }
