@@ -5,7 +5,7 @@ public class FollowPlayerPathfinding : MonoBehaviour
 {
     public Transform player;
     public float speed = 2f;
-    public float stoppingDistance = 1.5f;
+    public float stoppingDistance = 0.5f;
 
     private NavMeshPath path;
     private int currentCorner = 0;
@@ -58,7 +58,7 @@ public class FollowPlayerPathfinding : MonoBehaviour
         {
             transform.position = Vector3.MoveTowards(transform.position, target, speed * Time.deltaTime);
 
-            if (Vector3.Distance(transform.position, target) < 0.1f)
+            if (Vector3.Distance(transform.position, target) < 0.5f)
             {
                 currentCorner++;
             }

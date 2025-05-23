@@ -3,18 +3,19 @@ using System.Collections;
 
 public class FireMissionController : MonoBehaviour
 {
+    [Header("Объекты")]
     public GameObject fireEffect;
     public Collider2D waterZone;
     public Collider2D fireZone;
-
     public GameObject additionalFirePrefab;
     public Transform[] fireSpawnPoints;
+    public FireMissionUI fireUI;
 
+    [Header("Миссия")]
     public float missionDuration = 60f;
     public int requiredExtinguishes = 10;
 
-    public FireMissionUI fireUI;
-
+    [Header("Диалог и Сергей")]
     public FollowPlayerPathfinding sergeyFollow;
     public Transform playerTarget;
     public SecondDayDialogue dialogue;
@@ -25,20 +26,20 @@ public class FireMissionController : MonoBehaviour
     private int extinguishCount = 0;
     private bool hasWater = false;
     private bool missionStarted = false;
-    private bool missionFailed = false;
+    private bool missionEnded = false;
+    private bool nextMissionTriggered = false;
 
     void Update()
     {
-        if (fireUI != null)
-            fireUI.SetTime(timer);
-
-        if (!missionStarted || missionFailed)
+        if (!missionStarted || missionEnded)
             return;
 
         timer -= Time.deltaTime;
+        fireUI?.SetTime(timer);
 
-        if (timer <= 0f)
+        if (timer <= 0f && !missionEnded)
         {
+            missionEnded = true;
             if (extinguishCount < requiredExtinguishes)
                 FailMission();
             else
@@ -59,30 +60,38 @@ public class FireMissionController : MonoBehaviour
             if (waterZone.OverlapPoint(playerPos) && !hasWater)
             {
                 hasWater = true;
-                Debug.Log("\uD83D\uDCA7 Вода набрана");
+                Debug.Log("💧 Вода набрана");
             }
             else if (fireZone.OverlapPoint(playerPos) && hasWater)
             {
                 hasWater = false;
                 extinguishCount++;
-                Debug.Log($"\uD83D\uDD25 Потушено {extinguishCount}/{requiredExtinguishes}");
+                Debug.Log($"🔥 Потушено {extinguishCount}/{requiredExtinguishes}");
+                fireUI?.SetProgress(extinguishCount, requiredExtinguishes);
 
-                if (fireUI != null)
-                    fireUI.SetProgress(extinguishCount, requiredExtinguishes);
-
-                if (extinguishCount >= requiredExtinguishes)
+                if (extinguishCount >= requiredExtinguishes && !missionEnded)
+                {
+                    missionEnded = true;
                     CompleteMission();
+                }
             }
         }
     }
 
     public void StartMission()
     {
+        if (missionStarted)
+        {
+            Debug.LogWarning("🔥 Миссия уже была запущена");
+            return;
+        }
+
         missionStarted = true;
-        missionFailed = false;
-        timer = missionDuration;
+        missionEnded = false;
+        nextMissionTriggered = false;
         extinguishCount = 0;
         hasWater = false;
+        timer = missionDuration;
 
         fireEffect.SetActive(true);
 
@@ -92,47 +101,40 @@ public class FireMissionController : MonoBehaviour
             fireUI.SetProgress(0, requiredExtinguishes);
             fireUI.SetTime(missionDuration);
         }
+
+        Debug.Log("🚨 Миссия тушения пожара началась");
     }
 
     private void CompleteMission()
     {
+        Debug.Log("✅ Пожар потушен успешно");
+
         missionStarted = false;
         fireEffect.SetActive(false);
+        fireUI?.SetVisible(false);
         InteractionHintController.Instance?.ShowHint(false);
 
-        if (fireUI != null)
-        {
-            fireUI.SetProgress(extinguishCount, requiredExtinguishes);
-            fireUI.SetVisible(false);
-        }
-
-        sergeyFollow.SetStoppingDistance(0.2f);
-        StartCoroutine(WaitForSergeyThenStartDialogue(successDialogueLines));
-        StartCoroutine(StartNextMissionAfterDialogue());
+        StartCoroutine(SergeyDialogueThenNext(successDialogueLines));
     }
 
     private void FailMission()
     {
+        Debug.Log("❌ Пожар не потушен — миссия провалена");
+
         missionStarted = false;
-        missionFailed = true;
+        fireUI?.SetVisible(false);
         InteractionHintController.Instance?.ShowHint(false);
 
-        if (fireUI != null)
-            fireUI.SetVisible(false);
-
-        Debug.Log("❌ Миссия провалена. Пожар вышел из-под контроля");
-
-        var box = fireZone as BoxCollider2D;
-        if (box != null)
+        // Расширение огня
+        if (fireZone is BoxCollider2D box)
         {
-            box.size *= 2f;
+            box.size *= 0.5f;
             box.offset = Vector2.zero;
             box.isTrigger = false;
 
             Vector2 size = box.size;
             Vector2 center = box.bounds.center;
             float step = 2f;
-            int maxFires = 200;
             int count = 0;
 
             for (float x = -size.x / 2f; x <= size.x / 2f; x += step)
@@ -141,52 +143,42 @@ public class FireMissionController : MonoBehaviour
                 {
                     Vector2 spawnPos = center + new Vector2(x, y);
                     Instantiate(additionalFirePrefab, spawnPos, Quaternion.identity);
-
                     count++;
-                    if (count >= maxFires)
-                        break;
+                    if (count >= 200) break;
                 }
-                if (count >= maxFires)
-                    break;
+                if (count >= 200) break;
             }
 
-            Debug.Log($"\uD83D\uDD25 Заспавнено {count} очагов огня по зоне {box.size}");
+            Debug.Log($"🔥 Заспавнено {count} очагов огня");
         }
 
-        sergeyFollow.SetStoppingDistance(0.2f);
-        StartCoroutine(WaitForSergeyThenStartDialogue(failDialogueLines));
-        StartCoroutine(StartNextMissionAfterDialogue());
+        StartCoroutine(SergeyDialogueThenNext(failDialogueLines));
     }
 
-    private IEnumerator WaitForSergeyThenStartDialogue(string[] lines)
+    private IEnumerator SergeyDialogueThenNext(string[] lines)
     {
-        Transform sergey = sergeyFollow.transform;
-        Vector3 target = playerTarget.position;
-
-        // Если Сергей уже рядом — запускаем диалог сразу
-        if (Vector3.Distance(sergey.position, target) <= 0.3f)
-        {
-            if (dialogue != null)
-                dialogue.StartCustomDialogue(lines);
-
+        if (nextMissionTriggered)
             yield break;
-        }
 
-        // Иначе ждём подхода
-        while (Vector3.Distance(sergey.position, target) > 0.3f)
-        {
+        nextMissionTriggered = true;
+
+        // Сергей подходит
+        sergeyFollow.SetStoppingDistance(0.2f);
+        sergeyFollow.SetTarget(playerTarget);
+
+        while (Vector3.Distance(sergeyFollow.transform.position, playerTarget.position) > 0.3f)
             yield return null;
-        }
 
-        if (dialogue != null)
-            dialogue.StartCustomDialogue(lines);
-    }
-    private IEnumerator StartNextMissionAfterDialogue()
-    {
-        yield return new WaitForSeconds(2f); // Лучше заменить на проверку завершения диалога
+        sergeyFollow.EnableMovement(false);
 
-        Debug.Log("▶ Запускаем следующую миссию...");
-        // Пример: можно вызвать сцену, триггер или менеджер
+        // Диалог
+        dialogue.StartCustomDialogue(lines);
+
+        while (!dialogue.IsDialogueFinished)
+            yield return null;
+
+        // Запуск следующей миссии
+        Debug.Log("➡️ Диалог завершён. Запуск следующей миссии.");
         NextMissionManager.Instance?.StartNext();
     }
 }

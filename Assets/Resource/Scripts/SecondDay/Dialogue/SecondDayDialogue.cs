@@ -18,8 +18,11 @@ public class SecondDayDialogue : MonoBehaviour
     private Coroutine typingCoroutine;
     private bool isTyping = false;
     private bool dialogueFinished = false;
+    private bool isInitialCutscene = true;
+
     private PlayerMovement player;
     public FireMissionController fireMission;
+    public bool IsDialogueFinished => dialogueFinished;
 
     private void Start()
     {
@@ -56,6 +59,7 @@ public class SecondDayDialogue : MonoBehaviour
         isTyping = false;
         continueHint.SetActive(true);
     }
+
     public void StartCustomDialogue(string[] lines)
     {
         Debug.Log($"📢 Запускаем кастомный диалог с {lines.Length} строками");
@@ -63,6 +67,7 @@ public class SecondDayDialogue : MonoBehaviour
         dialogueLines = lines;
         currentLine = 0;
         dialogueFinished = false;
+        isInitialCutscene = false; // 💡 Важно: не стартовая катсцена
 
         if (player == null)
             player = FindObjectOfType<PlayerMovement>();
@@ -72,9 +77,6 @@ public class SecondDayDialogue : MonoBehaviour
         StartCoroutine(SlideBarsIn());
         StartTypingLine();
     }
-
-
-
 
     private void Update()
     {
@@ -141,7 +143,6 @@ public class SecondDayDialogue : MonoBehaviour
             sergey.EnableMovement(true);
         }
 
-        FindObjectOfType<FollowPlayerPathfinding>()?.SetStoppingDistance(1.5f);
         float t = 0f;
         Vector2 topEnd = new Vector2(0, topBar.rect.height);
         Vector2 botEnd = new Vector2(0, -bottomBar.rect.height);
@@ -164,12 +165,11 @@ public class SecondDayDialogue : MonoBehaviour
         if (player != null)
             player.EnableMovement();
 
-
         // 🏆 Выдаём ачивку
         AchievementManager.Instance.Unlock("Второй день");
-        if (fireMission != null)
+
+        // ✅ Запускаем миссию только если это стартовая сцена
+        if (isInitialCutscene && fireMission != null)
             fireMission.StartMission();
-        else
-            Debug.LogWarning("FireMissionController не назначен!");
     }
 }
