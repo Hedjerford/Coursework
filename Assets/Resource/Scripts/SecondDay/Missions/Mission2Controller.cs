@@ -1,92 +1,86 @@
 ﻿using UnityEngine;
-using UnityEngine.AI;
 using System.Collections;
 
 public class Mission2Controller : MonoBehaviour
 {
-    [Header("Объекты и перемещение")]
-    public Transform rescueArrivalPoint;
-    public Transform fireTargetPoint;
-
-    public FollowPlayerPathfinding sergeyFollow;
-    public Transform playerTarget;
+    [Header("Точки назначения")]
+    public Transform fireTargetPoint;    // куда идут после диалога
+    public Transform playerTarget;       // куда подходят для диалога
 
     [Header("Диалог")]
     public SecondDayDialogue dialogue;
     public string[] successDialogueLines;
     public string[] failDialogueLines;
-    public string[] sergeyDialogueLines;
-    public bool playerSucceededPreviously = true; // ← передаётся из предыдущей миссии
+    public bool playerSucceededPreviously = true;
 
-    [Header("Спавн зверей")]
-    public GameObject animalsSpawner;
-
-    [Header("Спавн МЧС")]
+    [Header("МЧС")]
     public GameObject rescueTeamPrefab;
     public Transform spawnPoint;
     private RescueTeamPathfinder rescueTeam;
 
+    [Header("Настройки")]
+    public float dialogueStartDistance = 1.5f;
+
+    private bool started = false;
+
+    public void SetPlayerSucceeded(bool succeeded)
+    {
+        playerSucceededPreviously = succeeded;
+    }
+    private void Start()
+    {
+        StartMission();
+    }
     public void StartMission()
     {
-        Debug.Log("✅ Спавним МЧС в точке: " + spawnPoint.position);
-        Debug.Log("🎯 Цель: " + rescueArrivalPoint.position);
-        Debug.Log("▶ Компонент RescueTeamPathfinder: " + rescueTeam);
+        if (started)
+        {
+            Debug.LogWarning("🔁 Миссия с МЧС уже была запущена.");
+            return;
+        }
+
+        started = true;
+
+        Debug.Log("🚒 Спавним МЧС и направляем к игроку");
+
         GameObject obj = Instantiate(rescueTeamPrefab, spawnPoint.position, Quaternion.identity);
         rescueTeam = obj.GetComponent<RescueTeamPathfinder>();
 
         if (rescueTeam == null)
         {
-            Debug.LogError("❌ На префабе нет RescueTeamPathfinder!");
+            Debug.LogError("❌ На префабе нет компонента RescueTeamPathfinder!");
             return;
         }
 
-        Debug.Log("🚒 МЧС выехали");
-        rescueTeam.SetTarget(rescueArrivalPoint);
-        StartCoroutine(RescueArrival());
+        rescueTeam.EnableMovement(true);
+        rescueTeam.SetTarget(playerTarget);
+
+        StartCoroutine(WaitForArrivalAtPlayer());
     }
 
-    private IEnumerator RescueArrival()
+    private IEnumerator WaitForArrivalAtPlayer()
     {
-        while (Vector3.Distance(rescueTeam.transform.position, rescueArrivalPoint.position) > 0.5f)
+        while (Vector3.Distance(rescueTeam.transform.position, playerTarget.position) > dialogueStartDistance)
             yield return null;
 
-        Debug.Log("✅ МЧС прибыл. Начинаем диалог.");
+        Debug.Log("✅ МЧС подошёл к игроку. Запускаем диалог");
+
+        rescueTeam.EnableMovement(false); // Останавливаем движение на время диалога
+
         var lines = playerSucceededPreviously ? successDialogueLines : failDialogueLines;
         dialogue.StartCustomDialogue(lines);
 
-        yield return StartCoroutine(WaitForDialogueThenMoveToFire());
+        yield return StartCoroutine(WaitForDialogueThenGoToFire());
     }
 
-    private IEnumerator WaitForDialogueThenMoveToFire()
+    private IEnumerator WaitForDialogueThenGoToFire()
     {
-        yield return new WaitForSeconds(1f);
         while (!dialogue.IsDialogueFinished)
             yield return null;
 
-        Debug.Log("🔥 МЧС направляется к пожару");
+        Debug.Log("➡️ Диалог завершён. МЧС направляется к пожару");
+
+        rescueTeam.EnableMovement(true); // Включаем движение
         rescueTeam.SetTarget(fireTargetPoint);
-
-        yield return new WaitForSeconds(1f); // буфер
-        StartCoroutine(StartSergeySequence());
-    }
-
-    private IEnumerator StartSergeySequence()
-    {
-        Debug.Log("🚶‍♂️ Сергей подходит к игроку");
-        sergeyFollow.SetStoppingDistance(0.2f);
-        sergeyFollow.SetTarget(playerTarget);
-
-        while (Vector3.Distance(sergeyFollow.transform.position, playerTarget.position) > 0.3f)
-            yield return null;
-
-        sergeyFollow.EnableMovement(false);
-        dialogue.StartCustomDialogue(sergeyDialogueLines);
-
-        yield return new WaitForSeconds(1f);
-        while (!dialogue.IsDialogueFinished)
-            yield return null;
-
-        Debug.Log("🐾 Запуск зверей...");
-        animalsSpawner?.SetActive(true);
     }
 }

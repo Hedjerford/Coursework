@@ -52,14 +52,4 @@ public class NextMissionManager : MonoBehaviour
             missions[currentIndex].SetActive(true);
         }
     }
-
-    public void ResetMissions()
-    {
-        foreach (var m in missions)
-        {
-            m.SetActive(false);
-        }
-
-        currentIndex = -1;
-    }
 }
