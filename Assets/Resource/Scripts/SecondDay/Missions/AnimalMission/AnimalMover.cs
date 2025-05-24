@@ -5,43 +5,46 @@ using UnityEngine.AI;
 public class AnimalMover : MonoBehaviour
 {
     public float speed = 2f;
-    public float repathInterval = 3f;
-    public Transform[] trapTargets; // потенциальные капканы
+
+    [HideInInspector] public Transform firstTarget;
+    [HideInInspector] public Transform finalTrap;
 
     private Rigidbody2D rb;
     private NavMeshPath path;
-    private int currentPathIndex;
-    private float repathTimer;
+    private int currentPathIndex = 0;
+    private bool goingToTrap = false;
+    private bool isTrapped = false;
+    private bool playerNearby = false;
+    private bool isRescued = false;
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         path = new NavMeshPath();
-        repathTimer = repathInterval;
-        SetRandomTrapPath();
+
+        if (firstTarget != null)
+            SetPathTo(firstTarget);
     }
 
     void Update()
     {
-        repathTimer -= Time.deltaTime;
-        if (repathTimer <= 0f)
+        if (isTrapped && playerNearby && Input.GetKeyDown(KeyCode.E))
         {
-            repathTimer = repathInterval;
-            SetRandomTrapPath();
+            ReleaseFromTrap();
         }
 
-        MoveAlongPath();
+        if (!isTrapped && !isRescued)
+        {
+            MoveAlongPath();
+        }
     }
 
-    void SetRandomTrapPath()
+    void SetPathTo(Transform target)
     {
-        if (trapTargets.Length == 0) return;
+        if (target == null) return;
 
-        Transform target = trapTargets[Random.Range(0, trapTargets.Length)];
         if (NavMesh.CalculatePath(transform.position, target.position, NavMesh.AllAreas, path))
-        {
             currentPathIndex = 0;
-        }
     }
 
     void MoveAlongPath()
@@ -51,18 +54,77 @@ public class AnimalMover : MonoBehaviour
 
         Vector3 targetPos = path.corners[currentPathIndex];
         Vector3 moveDir = (targetPos - transform.position).normalized;
+
         rb.MovePosition(transform.position + moveDir * speed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, targetPos) < 0.1f)
+        {
             currentPathIndex++;
+
+            if (currentPathIndex >= path.corners.Length)
+            {
+                if (!goingToTrap)
+                {
+                    goingToTrap = true;
+                    SetPathTo(finalTrap);
+                }
+            }
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Trap"))
+        if (other.CompareTag("Trap") && Vector3.Distance(other.transform.position, finalTrap.position) < 0.5f)
         {
-            Debug.Log("🐾 Зверёк попал в капкан!");
-            Destroy(gameObject); // или проиграть анимацию
+            if (!isTrapped)
+            {
+                Debug.Log("🐾 Зверёк попал в капкан");
+                isTrapped = true;
+                rb.linearVelocity = Vector2.zero;
+            }
+        }
+        else if (other.CompareTag("Player"))
+        {
+            playerNearby = true;
         }
     }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerNearby = false;
+        }
+    }
+
+    public void ReleaseFromTrap()
+    {
+        Debug.Log("🆓 Зверёк освобождён!");
+
+        isTrapped = false;
+        isRescued = true;
+        goingToTrap = false;
+
+        // Случайная точка поблизости
+        Vector3 randomDirection = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0f);
+        Vector3 candidatePosition = transform.position + randomDirection;
+
+        // Пытаемся найти ближайшую точку на NavMesh
+        if (NavMesh.SamplePosition(candidatePosition, out NavMeshHit hit, 3f, NavMesh.AllAreas))
+        {
+            GameObject temp = new GameObject("EscapeTarget");
+            temp.transform.position = hit.position;
+            SetPathTo(temp.transform);
+        }
+        else
+        {
+            Debug.LogWarning("❗ Не удалось найти точку побега на NavMesh");
+        }
+
+        // Обновим счётчик спасённых зверей, если используешь
+        if (AnimalRescueManager.Instance != null)
+            AnimalRescueManager.Instance.RegisterRescue();
+    }
+
+
 }

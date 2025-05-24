@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public class SecondDayDialogue : MonoBehaviour
 {
@@ -23,6 +24,14 @@ public class SecondDayDialogue : MonoBehaviour
     private PlayerMovement player;
     public FireMissionController fireMission;
     public bool IsDialogueFinished => dialogueFinished;
+
+    [Header("Зверьки")]
+    public GameObject[] animalPrefabs;
+    public Transform[] animalSpawnPoints;
+    public Transform[] firstTargets;             // ⬅️ новое: промежуточные цели
+    public Transform[] trapTargets;
+    public int animalsToSpawn = 5;
+    public bool EndSpawn = true;
 
     private void Start()
     {
@@ -67,7 +76,7 @@ public class SecondDayDialogue : MonoBehaviour
         dialogueLines = lines;
         currentLine = 0;
         dialogueFinished = false;
-        isInitialCutscene = false; // 💡 Важно: не стартовая катсцена
+        isInitialCutscene = false;
 
         if (player == null)
             player = FindObjectOfType<PlayerMovement>();
@@ -128,6 +137,11 @@ public class SecondDayDialogue : MonoBehaviour
 
         topBar.anchoredPosition = target;
         bottomBar.anchoredPosition = target;
+        if(FireMissionController.FireMissonEnd)
+        {
+            SpawnAnimals(); // 🐾 Спавним зверей сразу после появления панелей
+        }
+        
     }
 
     IEnumerator SlideBarsOut()
@@ -135,7 +149,6 @@ public class SecondDayDialogue : MonoBehaviour
         if (player != null)
             player.EnableMovement();
 
-        // Вернуть дистанцию и движение Сергею
         var sergey = FindObjectOfType<FollowPlayerPathfinding>();
         if (sergey != null)
         {
@@ -165,11 +178,45 @@ public class SecondDayDialogue : MonoBehaviour
         if (player != null)
             player.EnableMovement();
 
-        // 🏆 Выдаём ачивку
         AchievementManager.Instance.Unlock("Второй день");
 
-        // ✅ Запускаем миссию только если это стартовая сцена
         if (isInitialCutscene && fireMission != null)
             fireMission.StartMission();
+    }
+
+    private void SpawnAnimals()
+    {
+        Debug.Log("🐾 Спавним зверьков по маршруту");
+
+        List<Transform> availableTraps = new List<Transform>(trapTargets);
+
+        for (int i = 0; i < animalsToSpawn; i++)
+        {
+            if (availableTraps.Count == 0)
+            {
+                Debug.LogWarning("⚠️ Не хватает капканов для всех зверей!");
+                break;
+            }
+
+            GameObject prefab = animalPrefabs[Random.Range(0, animalPrefabs.Length)];
+            Transform spawn = animalSpawnPoints[Random.Range(0, animalSpawnPoints.Length)];
+            Transform first = firstTargets[Random.Range(0, firstTargets.Length)];
+            int trapIndex = Random.Range(0, availableTraps.Count);
+            Transform trap = availableTraps[trapIndex];
+            availableTraps.RemoveAt(trapIndex); // 🚫 больше не используем этот капкан
+
+            GameObject animal = Instantiate(prefab, spawn.position, Quaternion.identity);
+
+            AnimalMover mover = animal.GetComponent<AnimalMover>();
+            if (mover != null)
+            {
+                mover.firstTarget = first;
+                mover.finalTrap = trap;
+            }
+            else
+            {
+                Debug.LogWarning("❗ На префабе зверька нет AnimalMover!");
+            }
+        }
     }
 }

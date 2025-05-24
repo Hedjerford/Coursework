@@ -21,6 +21,7 @@ public class TrashCounter : MonoBehaviour
         {
             AchievementManager.Instance.Unlock("—борщик");
         }
+
     }
 
     private void UpdateUI()

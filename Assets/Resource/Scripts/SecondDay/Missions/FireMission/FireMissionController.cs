@@ -21,6 +21,7 @@ public class FireMissionController : MonoBehaviour
     public SecondDayDialogue dialogue;
     public string[] successDialogueLines;
     public string[] failDialogueLines;
+    public static bool FireMissonEnd = true;
 
     private float timer;
     private int extinguishCount = 0;
@@ -120,10 +121,15 @@ public class FireMissionController : MonoBehaviour
         StartCoroutine(SergeyDialogueThenNext(successDialogueLines));
         SuccessMission = true;
         AchievementManager.Instance.Unlock("Пожарные со стажем");
+        FireMissonEnd = false;
+        LevelCompletionManager manager = FindObjectOfType<LevelCompletionManager>();
+        if (manager != null)
+            manager.Invoke("CheckCompletion", 1f); // можно с задержкой
     }
 
     private void FailMission()
     {
+        FireMissonEnd = false;
         AchievementManager.Instance.Unlock("Неудача...");
         SuccessMission = false;
         Debug.Log("❌ Пожар не потушен — миссия провалена");
@@ -154,6 +160,9 @@ public class FireMissionController : MonoBehaviour
                     if (count >= 200) break;
                 }
                 if (count >= 200) break;
+                LevelCompletionManager manager = FindObjectOfType<LevelCompletionManager>();
+                if (manager != null)
+                    manager.Invoke("CheckCompletion", 1f); // можно с задержкой
             }
 
             Debug.Log($"🔥 Заспавнено {count} очагов огня");

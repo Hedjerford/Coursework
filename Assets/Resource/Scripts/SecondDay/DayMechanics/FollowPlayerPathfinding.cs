@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class FollowPlayerPathfinding : MonoBehaviour
@@ -6,6 +6,10 @@ public class FollowPlayerPathfinding : MonoBehaviour
     public Transform player;
     public float speed = 2f;
     public float stoppingDistance = 0.5f;
+
+    public Animator animator; // 👈 Ссылка на Animator
+    public string horizontalParam = "Horizontal";
+    public string verticalParam = "Vertical";
 
     private NavMeshPath path;
     private int currentCorner = 0;
@@ -31,6 +35,12 @@ public class FollowPlayerPathfinding : MonoBehaviour
     public void EnableMovement(bool enable)
     {
         canMove = enable;
+
+        if (!enable && animator != null)
+        {
+            animator.SetFloat(horizontalParam, 0f);
+            animator.SetFloat(verticalParam, 0f);
+        }
     }
 
     void UpdatePath()
@@ -44,13 +54,20 @@ public class FollowPlayerPathfinding : MonoBehaviour
 
     void Update()
     {
-        if (!canMove) return;
-
-        if (path == null || path.corners.Length == 0 || currentCorner >= path.corners.Length)
+        if (!canMove || path == null || path.corners.Length == 0 || currentCorner >= path.corners.Length)
+        {
+            if (animator != null)
+            {
+                animator.SetFloat(horizontalParam, 0f);
+                animator.SetFloat(verticalParam, 0f);
+            }
             return;
+        }
 
         Vector3 target = path.corners[currentCorner];
         target.z = 0f;
+
+        Vector3 direction = (target - transform.position).normalized;
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
@@ -62,6 +79,16 @@ public class FollowPlayerPathfinding : MonoBehaviour
             {
                 currentCorner++;
             }
+        }
+        else
+        {
+            direction = Vector3.zero;
+        }
+
+        if (animator != null)
+        {
+            animator.SetFloat(horizontalParam, direction.x);
+            animator.SetFloat(verticalParam, direction.y);
         }
 
         transform.rotation = Quaternion.identity;
