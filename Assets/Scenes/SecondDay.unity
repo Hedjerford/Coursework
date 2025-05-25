@@ -2398,53 +2398,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1918717498}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &196223618
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 196223619}
-  - component: {fileID: 196223620}
-  m_Layer: 0
-  m_Name: TreeCounterController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &196223619
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 196223618}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.60269797, y: 0.07722048, z: -0.004806549}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &196223620
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 196223618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dc04586c58290a4d955366a36fe7868, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  counterText: {fileID: 1462734381}
-  plantedTrees: 0
-  targetTrees: 5
 --- !u!1 &213796815
 GameObject:
   m_ObjectHideFlags: 0
@@ -2993,10 +2946,10 @@ MonoBehaviour:
   fireZone: {fileID: 269886398}
   additionalFirePrefab: {fileID: 301940709867849570, guid: 73b8c343191393f4ba3c775d680b5c81, type: 3}
   fireSpawnPoints:
-  - {fileID: 0}
+  - {fileID: 2143975532}
   fireUI: {fileID: 176120}
   missionDuration: 60
-  requiredExtinguishes: 1
+  requiredExtinguishes: 10
   sergeyFollow: {fileID: 1903455824}
   playerTarget: {fileID: 1023681444}
   dialogue: {fileID: 550655751}
@@ -3099,8 +3052,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: LevelCompletionManager, Assembly-CSharp
+      - m_Target: {fileID: 1077265468}
+        m_TargetAssemblyTypeName: LevelCompletionManager_SecondDay, Assembly-CSharp
         m_MethodName: RestartLevel
         m_Mode: 1
         m_Arguments:
@@ -4024,7 +3977,7 @@ MonoBehaviour:
   trapTargets:
   - {fileID: 273081577}
   - {fileID: 430445910}
-  - {fileID: 273081577}
+  - {fileID: 1714151870}
   - {fileID: 847557001}
   - {fileID: 1923378943}
   animalsToSpawn: 5
@@ -4234,63 +4187,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &675814262
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 675814263}
-  - component: {fileID: 675814264}
-  m_Layer: 0
-  m_Name: LevelComplete
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &675814263
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 675814262}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.370663, y: -3.940602, z: -0.069721915}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1845989677}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &675814264
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 675814262}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bf2ffa564efb8045bb2e25ff00f5ad2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel: {fileID: 1717103255}
-  buttonFinish: {fileID: 217061664}
-  buttonContinue: {fileID: 552527215}
-  starsPanel: {fileID: 1148778371}
-  starImages:
-  - {fileID: 1232096362}
-  - {fileID: 534378127}
-  - {fileID: 1388434182}
-  fullStar: {fileID: 4815476061570213978, guid: 6ffbae9ab4403724aadc2fcf8e91c7db, type: 3}
-  emptyStar: {fileID: -1421797311933737301, guid: e15628bf7183dda4f8508fc53776792c, type: 3}
-  trashCounter: {fileID: 1440427410}
-  animalRescue: {fileID: 1781414580}
-  fireMission: {fileID: 359599205}
 --- !u!1 &680237811
 GameObject:
   m_ObjectHideFlags: 0
@@ -5916,6 +5812,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1070167221}
   m_CullTransparentMesh: 1
+--- !u!1 &1077265466
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1077265467}
+  - component: {fileID: 1077265468}
+  m_Layer: 0
+  m_Name: LevelCompelete
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1077265467
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1077265466}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1845989677}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1077265468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1077265466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e01da44365260044a8acec0d6cea6167, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 1717103255}
+  buttonFinish: {fileID: 217061664}
+  buttonContinue: {fileID: 552527215}
+  starsPanel: {fileID: 1461511577}
+  starImages:
+  - {fileID: 1232096362}
+  - {fileID: 534378127}
+  - {fileID: 1388434182}
+  fullStar: {fileID: 4815476061570213978, guid: 6ffbae9ab4403724aadc2fcf8e91c7db, type: 3}
+  emptyStar: {fileID: -1421797311933737301, guid: e15628bf7183dda4f8508fc53776792c, type: 3}
+  fireMission: {fileID: 359599205}
+  animalRescue: {fileID: 1781414580}
+  trashCounter: {fileID: 1440427410}
 --- !u!1 &1117473974
 GameObject:
   m_ObjectHideFlags: 0
@@ -6894,9 +6847,9 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 536680146}
   - {fileID: 1813788662}
   - {fileID: 6993604}
-  - {fileID: 536680146}
   - {fileID: 1717103256}
   - {fileID: 1461511578}
   - {fileID: 1449879042}
@@ -7030,7 +6983,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   trashText: {fileID: 1518880975}
-  totalTrash: 8
+  totalTrash: 5
   collectedCount: 0
 --- !u!1 &1441902980
 GameObject:
@@ -7158,11 +7111,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8522ec2e608291a43b057209e766dbfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeRemaining: 180
+  timeRemaining: 240
   timerText: {fileID: 696472820}
   blackOverlay: {fileID: 1461511581}
   resultPanel: {fileID: 1148778371}
-  levelCompletionManager: {fileID: 675814264}
+  levelCompletionManagerSecond: {fileID: 1077265468}
+  levelCompletionManager: {fileID: 0}
 --- !u!1 &1452376662
 GameObject:
   m_ObjectHideFlags: 0
@@ -7187,13 +7141,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1452376662}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.12, y: -12.24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 742746855}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1903455817}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1461511577
 GameObject:
@@ -7229,10 +7183,10 @@ RectTransform:
   - {fileID: 1148778372}
   m_Father: {fileID: 1353333271}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1461511579
 MonoBehaviour:
@@ -8033,8 +7987,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: LevelCompletionManager, Assembly-CSharp
+      - m_Target: {fileID: 1077265468}
+        m_TargetAssemblyTypeName: LevelCompletionManager_SecondDay, Assembly-CSharp
         m_MethodName: Continue
         m_Mode: 1
         m_Arguments:
@@ -30939,7 +30893,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1759797298
 RectTransform:
   m_ObjectHideFlags: 0
@@ -31041,7 +30995,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e2dbb11be465ce41be66a37cf06f69f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalAnimals: 1
+  totalAnimals: 5
   rescuedAnimals: 0
   rescueCounterText: {fileID: 1462734381}
 --- !u!1 &1791734285
@@ -31573,7 +31527,7 @@ Transform:
   m_Children:
   - {fileID: 30108382}
   - {fileID: 550655750}
-  - {fileID: 675814263}
+  - {fileID: 1077265467}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1903455815
@@ -31664,7 +31618,8 @@ Transform:
   m_LocalPosition: {x: -1.12, y: 12.24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1452376663}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &1903455818
@@ -32505,12 +32460,10 @@ SceneRoots:
   - {fileID: 1971140906}
   - {fileID: 1023681444}
   - {fileID: 1353333271}
-  - {fileID: 196223619}
   - {fileID: 746095716}
   - {fileID: 1845989677}
   - {fileID: 1903455817}
-  - {fileID: 856663837}
-  - {fileID: 1452376663}
   - {fileID: 1194203366}
   - {fileID: 1441902981}
   - {fileID: 1918717498}
+  - {fileID: 856663837}

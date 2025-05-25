@@ -35,7 +35,6 @@ public class FireMissionController : MonoBehaviour
 
     void Update()
     {
-        FindObjectOfType<LevelCompletionManager_SecondDay>()?.OnFireTimerEnd();
         if (!missionStarted || missionEnded)
             return;
 
@@ -112,6 +111,8 @@ public class FireMissionController : MonoBehaviour
 
     private void CompleteMission()
     {
+        SuccessMission = true;
+
         FindObjectOfType<LevelCompletionManager_SecondDay>()?.OnFireTimerEnd();
         Debug.Log("✅ Пожар потушен успешно");
 
@@ -121,7 +122,6 @@ public class FireMissionController : MonoBehaviour
         InteractionHintController.Instance?.ShowHint(false);
 
         StartCoroutine(SergeyDialogueThenNext(successDialogueLines));
-        SuccessMission = true;
         AchievementManager.Instance.Unlock("Пожарные со стажем");
         FireMissonEnd = false;
         LevelCompletionManager manager = FindObjectOfType<LevelCompletionManager>();
@@ -131,12 +131,12 @@ public class FireMissionController : MonoBehaviour
 
     private void FailMission()
     {
-        FindObjectOfType<LevelCompletionManager_SecondDay>()?.OnFireTimerEnd();
-        FireMissonEnd = false;
-        AchievementManager.Instance.Unlock("Неудача...");
-        SuccessMission = false;
-        Debug.Log("❌ Пожар не потушен — миссия провалена");
 
+        SuccessMission = false;
+
+        FindObjectOfType<LevelCompletionManager_SecondDay>()?.OnFireTimerEnd();
+        AchievementManager.Instance.Unlock("Неудача...");
+        Debug.Log("❌ Пожар не потушен — миссия провалена");
         missionStarted = false;
         fireUI?.SetVisible(false);
         InteractionHintController.Instance?.ShowHint(false);

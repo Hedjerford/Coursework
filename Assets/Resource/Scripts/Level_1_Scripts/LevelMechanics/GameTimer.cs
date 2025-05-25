@@ -9,7 +9,8 @@ public class GameTimer : MonoBehaviour
     public TextMeshProUGUI timerText;
     public CanvasGroup blackOverlay;
     public GameObject resultPanel;
-    public LevelCompletionManager_SecondDay levelCompletionManager;
+    public LevelCompletionManager_SecondDay levelCompletionManagerSecond;
+    public LevelCompletionManager levelCompletionManager;
 
     private bool levelEnded = false;
     private bool isRunning = true;
@@ -63,6 +64,8 @@ public class GameTimer : MonoBehaviour
 
         blackOverlay.alpha = 1;
 
+        if (levelCompletionManagerSecond != null)
+            levelCompletionManagerSecond.ShowStars(); // ✅ правильный вызов
         if (levelCompletionManager != null)
             levelCompletionManager.ShowStars(); // ✅ правильный вызов
     }

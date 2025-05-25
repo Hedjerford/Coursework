@@ -21935,6 +21935,7 @@ MonoBehaviour:
   timerText: {fileID: 696472820}
   blackOverlay: {fileID: 1461511581}
   resultPanel: {fileID: 1148778371}
+  levelCompletionManagerSecond: {fileID: 0}
   levelCompletionManager: {fileID: 1341679717}
 --- !u!1 &1461511577
 GameObject:

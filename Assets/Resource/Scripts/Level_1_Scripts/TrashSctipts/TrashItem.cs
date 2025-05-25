@@ -13,7 +13,7 @@ public class TrashItem : MonoBehaviour
             FindObjectOfType<TrashCounter>()?.CollectTrash();
             InteractionHintController.Instance.ShowHint(false);  // убрать подсказку
             Destroy(gameObject); // или отключить: gameObject.SetActive(false);
-            FindObjectOfType<LevelCompletionManager>().MarkTrashCollected();
+            FindObjectOfType<LevelCompletionManager_SecondDay>()?.CheckCompletion();
 
 
 

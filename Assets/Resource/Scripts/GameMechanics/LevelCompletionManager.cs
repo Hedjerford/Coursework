@@ -55,14 +55,14 @@ public class LevelCompletionManager : MonoBehaviour
 
     private void CheckCompletion()
     {
-        if (!shown && treePlanted && birdFed && trashCollected)
+        if (!shown || treePlanted || birdFed || trashCollected)
         {
             shown = true;
             panel.SetActive(true);
         }
     }
 
-    private void ShowStars()
+    public void ShowStars()
     {
         FindObjectOfType<GameTimer>().StopTimer();
 
