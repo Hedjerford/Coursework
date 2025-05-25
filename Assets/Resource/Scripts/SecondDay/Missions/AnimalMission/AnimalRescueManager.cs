@@ -33,10 +33,9 @@ public class AnimalRescueManager : MonoBehaviour
         }
         if (rescuedAnimals >= totalAnimals)
         {
-            LevelCompletionManager manager = FindObjectOfType<LevelCompletionManager>();
-            if (manager != null)
-                manager.Invoke("CheckCompletion", 1f);
+            FindObjectOfType<LevelCompletionManager_SecondDay>()?.CheckCompletion();
         }
+
 
     }
 

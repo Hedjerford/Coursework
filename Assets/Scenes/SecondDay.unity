@@ -3099,7 +3099,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1341679717}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LevelCompletionManager, Assembly-CSharp
         m_MethodName: RestartLevel
         m_Mode: 1
@@ -4245,7 +4245,7 @@ GameObject:
   - component: {fileID: 675814263}
   - component: {fileID: 675814264}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: LevelComplete
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4259,12 +4259,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 675814262}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 11.370663, y: -3.940602, z: -0.069721915}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1845989677}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &675814264
 MonoBehaviour:
@@ -6769,63 +6769,6 @@ MonoBehaviour:
   rescueTeamPrefab: {fileID: 7725042069849615274, guid: d4aa83b09e01d0a44b704309e736a119, type: 3}
   spawnPoint: {fileID: 2143975532}
   dialogueStartDistance: 1.5
---- !u!1 &1341679715
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1341679716}
-  - component: {fileID: 1341679717}
-  m_Layer: 0
-  m_Name: LevelComplete
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1341679716
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1341679715}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1845989677}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1341679717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1341679715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f69e0b888e4060146b707dcbf18679f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel: {fileID: 1717103255}
-  buttonFinish: {fileID: 217061664}
-  buttonContinue: {fileID: 552527215}
-  starsPanel: {fileID: 1461511577}
-  starImages:
-  - {fileID: 1232096362}
-  - {fileID: 534378127}
-  - {fileID: 1388434182}
-  fullStar: {fileID: 4815476061570213978, guid: 6ffbae9ab4403724aadc2fcf8e91c7db, type: 3}
-  emptyStar: {fileID: -1421797311933737301, guid: e15628bf7183dda4f8508fc53776792c, type: 3}
-  treeCounter: {fileID: 196223620}
-  birdCounter: {fileID: 0}
-  trashCounter: {fileID: 1440427410}
 --- !u!1 &1348818726
 GameObject:
   m_ObjectHideFlags: 0
@@ -7219,7 +7162,7 @@ MonoBehaviour:
   timerText: {fileID: 696472820}
   blackOverlay: {fileID: 1461511581}
   resultPanel: {fileID: 1148778371}
-  levelCompletionManager: {fileID: 1341679717}
+  levelCompletionManager: {fileID: 675814264}
 --- !u!1 &1452376662
 GameObject:
   m_ObjectHideFlags: 0
@@ -8090,7 +8033,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1341679717}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LevelCompletionManager, Assembly-CSharp
         m_MethodName: Continue
         m_Mode: 1
@@ -31629,8 +31572,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 30108382}
-  - {fileID: 1341679716}
   - {fileID: 550655750}
+  - {fileID: 675814263}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1903455815
@@ -32571,4 +32514,3 @@ SceneRoots:
   - {fileID: 1194203366}
   - {fileID: 1441902981}
   - {fileID: 1918717498}
-  - {fileID: 675814263}

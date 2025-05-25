@@ -35,6 +35,7 @@ public class FireMissionController : MonoBehaviour
 
     void Update()
     {
+        FindObjectOfType<LevelCompletionManager_SecondDay>()?.OnFireTimerEnd();
         if (!missionStarted || missionEnded)
             return;
 
@@ -111,6 +112,7 @@ public class FireMissionController : MonoBehaviour
 
     private void CompleteMission()
     {
+        FindObjectOfType<LevelCompletionManager_SecondDay>()?.OnFireTimerEnd();
         Debug.Log("✅ Пожар потушен успешно");
 
         missionStarted = false;
@@ -123,12 +125,13 @@ public class FireMissionController : MonoBehaviour
         AchievementManager.Instance.Unlock("Пожарные со стажем");
         FireMissonEnd = false;
         LevelCompletionManager manager = FindObjectOfType<LevelCompletionManager>();
-        if (manager != null)
-            manager.Invoke("CheckCompletion", 1f); // можно с задержкой
+        FindObjectOfType<LevelCompletionManager_SecondDay>()?.CheckCompletion();
+
     }
 
     private void FailMission()
     {
+        FindObjectOfType<LevelCompletionManager_SecondDay>()?.OnFireTimerEnd();
         FireMissonEnd = false;
         AchievementManager.Instance.Unlock("Неудача...");
         SuccessMission = false;

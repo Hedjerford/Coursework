@@ -21,6 +21,10 @@ public class TrashCounter : MonoBehaviour
         {
             AchievementManager.Instance.Unlock("—борщик");
         }
+        if (collectedCount >= 8)
+        {
+            FindObjectOfType<LevelCompletionManager_SecondDay>()?.CheckCompletion();
+        }
 
     }
 
