@@ -144,6 +144,10 @@ public class DialogueController : MonoBehaviour
                 fader.nextSceneName = "OilDay";
                 fader.FadeOutAndLoadScene();
             }
+            else if (stage == 6 || stage == 7)
+            {
+                fader.FadeOutAndLoadScene();
+            }
         }
 
     }
