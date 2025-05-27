@@ -5,15 +5,39 @@ public class BoatController : MonoBehaviour
     public float moveSpeed = 5f;
     public float turnSpeed = 150f;
 
-    [Header("Ограничения движения по воде")]
-    public Vector2 minBounds; // Левый нижний угол зоны воды
-    public Vector2 maxBounds; // Правый верхний угол зоны воды
-
     private bool isOnWater = false;
+    private Vector2 minBounds;
+    private Vector2 maxBounds;
+
+    void Start()
+    {
+        // Автоматически найти объект с тегом Water и взять границы коллайдера
+        GameObject waterObject = GameObject.FindGameObjectWithTag("Water");
+
+        if (waterObject != null)
+        {
+            Collider2D waterCollider = waterObject.GetComponent<Collider2D>();
+
+            if (waterCollider != null)
+            {
+                Bounds bounds = waterCollider.bounds;
+                minBounds = bounds.min;
+                maxBounds = bounds.max;
+                Debug.Log($"🌊 Границы воды определены: min={minBounds}, max={maxBounds}");
+            }
+            else
+            {
+                Debug.LogWarning("❗ Объект с тегом 'Water' не содержит Collider2D");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("❗ Не найден объект с тегом 'Water'");
+        }
+    }
 
     void Update()
     {
-        // Всегда принимаем управление, но двигаем лодку только если она на воде
         float move = Input.GetAxis("Vertical");
         float rotate = -Input.GetAxis("Horizontal");
 
@@ -23,7 +47,7 @@ public class BoatController : MonoBehaviour
             transform.Rotate(Vector3.forward * rotate * turnSpeed * Time.deltaTime);
         }
 
-        ClampPosition(); // ⛔ Ограничение по границам воды
+        ClampPosition();
     }
 
     void ClampPosition()

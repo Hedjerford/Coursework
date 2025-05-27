@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Trap
   - Water
+  - Boat
   layers:
   - Default
   - TransparentFX

@@ -51,6 +51,8 @@ public class BoatEnterTrigger : MonoBehaviour
 
     void EnterBoat()
     {
+        FindObjectOfType<SmoothFollow>().SetZoom(6f);
+
         Debug.Log("🛥 Игрок сел в катер");
         playerInBoat = true;
 
