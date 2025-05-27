@@ -35,11 +35,15 @@ public class LevelCompletionManager_SecondDay : MonoBehaviour
         buttonContinue.onClick.AddListener(() => panel.SetActive(false));
     }
 
+    private void Update()
+    {
+        CheckCompletion();
+    }
     // Метод вызывается из FireMissionController
     public void OnFireTimerEnd()
     {
         fireEnded = true;
-        CheckCompletion();
+        
     }
 
     // Вызывается из AnimalRescueManager

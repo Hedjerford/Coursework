@@ -34,7 +34,7 @@ public class NPCDialogueTrigger : MonoBehaviour
     {
         Debug.Log("📢 Диалог с НПС завершён");
 
-        // Здесь можно включить квест, активировать объект, начать анимацию и т.п.
+        BoomPlacementController.Instance?.StartBoomMission();
     }
 
     void LockZ()

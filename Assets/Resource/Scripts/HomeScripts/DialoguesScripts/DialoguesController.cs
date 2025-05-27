@@ -23,6 +23,8 @@ public class DialogueController : MonoBehaviour
     [TextArea(3, 10)] public string[] GoodDialogue; // Если игрок выполнил задание хорошо
     [TextArea(3, 10)] public string[] EndSecondLevelGood;
     [TextArea(3, 10)] public string[] EndSecondLevelBad;
+    [TextArea(3, 10)] public string[] OilLevelGood;
+    [TextArea(3, 10)] public string[] OilLevelBad;
 
     private void Awake()
     {
@@ -54,6 +56,12 @@ public class DialogueController : MonoBehaviour
                 break;
             case 5:
                 dialogueLines = EndSecondLevelBad;
+                break;
+            case 6:
+                dialogueLines = OilLevelGood;
+                break;
+            case 7:
+                dialogueLines = OilLevelBad;
                 break;
             default:
                 dialogueLines = firstVisitLines;
