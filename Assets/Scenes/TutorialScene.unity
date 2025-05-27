@@ -1321,6 +1321,8 @@ MonoBehaviour:
   target: {fileID: 1023681444}
   smoothSpeed: 0.125
   offset: {x: 0, y: 0, z: 0}
+  cameraZoomSpeed: 2
+  targetOrthoSize: 5
 --- !u!1 &530781762
 GameObject:
   m_ObjectHideFlags: 0

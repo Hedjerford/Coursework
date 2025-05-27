@@ -77,9 +77,6 @@ public class LevelCompletionManager : MonoBehaviour
 
         for (int i = 0; i < starImages.Length; i++)
             starImages[i].sprite = i < starCount ? fullStar : emptyStar;
-
-        // Можно добавить кнопку перехода на следующий уровень
-        // или автопереход через 5 секунд
     }
 
     public void ShowCompletionResult()
@@ -112,7 +109,6 @@ public class LevelCompletionManager : MonoBehaviour
             PlayerPrefs.SetInt("HQDialogueStage", 2); // диалог 2
         }
 
-        //PlayerPrefs.Save(); // обязательно перед загрузкой сцены
-        SceneManager.LoadScene("Headquarters_Cutscene"); // подставь нужное имя
+        SceneManager.LoadScene("Headquarters_Cutscene");
     }
 }

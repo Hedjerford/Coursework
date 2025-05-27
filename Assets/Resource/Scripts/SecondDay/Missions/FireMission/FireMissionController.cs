@@ -21,7 +21,7 @@ public class FireMissionController : MonoBehaviour
     public SecondDayDialogue dialogue;
     public string[] successDialogueLines;
     public string[] failDialogueLines;
-    public static bool FireMissonEnd = true;
+    public static bool FireMissonEnd = false;
 
     private float timer;
     private int extinguishCount = 0;
@@ -32,7 +32,6 @@ public class FireMissionController : MonoBehaviour
 
     [Header("Успешность миссии")]
     public static bool SuccessMission;
-
     void Update()
     {
         if (!missionStarted || missionEnded)
@@ -112,7 +111,7 @@ public class FireMissionController : MonoBehaviour
     private void CompleteMission()
     {
         SuccessMission = true;
-
+        FireMissonEnd = true;
         FindObjectOfType<LevelCompletionManager_SecondDay>()?.OnFireTimerEnd();
         Debug.Log("✅ Пожар потушен успешно");
 
@@ -122,9 +121,8 @@ public class FireMissionController : MonoBehaviour
         InteractionHintController.Instance?.ShowHint(false);
 
         StartCoroutine(SergeyDialogueThenNext(successDialogueLines));
-        AchievementManager.Instance.Unlock("Пожарные со стажем");
-        FireMissonEnd = false;
-        LevelCompletionManager manager = FindObjectOfType<LevelCompletionManager>();
+        AchievementManager.Instance.Unlock("Пожарные со стажем");;
+        LevelCompletionManager_SecondDay manager = FindObjectOfType<LevelCompletionManager_SecondDay>();
         FindObjectOfType<LevelCompletionManager_SecondDay>()?.CheckCompletion();
 
     }
@@ -133,7 +131,7 @@ public class FireMissionController : MonoBehaviour
     {
 
         SuccessMission = false;
-
+        FireMissonEnd = true;
         FindObjectOfType<LevelCompletionManager_SecondDay>()?.OnFireTimerEnd();
         AchievementManager.Instance.Unlock("Неудача...");
         Debug.Log("❌ Пожар не потушен — миссия провалена");
@@ -163,7 +161,7 @@ public class FireMissionController : MonoBehaviour
                     if (count >= 200) break;
                 }
                 if (count >= 200) break;
-                LevelCompletionManager manager = FindObjectOfType<LevelCompletionManager>();
+                LevelCompletionManager_SecondDay manager = FindObjectOfType<LevelCompletionManager_SecondDay>();
                 if (manager != null)
                     manager.Invoke("CheckCompletion", 1f); // можно с задержкой
             }
@@ -173,7 +171,7 @@ public class FireMissionController : MonoBehaviour
 
         StartCoroutine(SergeyDialogueThenNext(failDialogueLines));
     }
-
+    
     private IEnumerator SergeyDialogueThenNext(string[] lines)
     {
         if (nextMissionTriggered)

@@ -137,7 +137,7 @@ public class SecondDayDialogue : MonoBehaviour
 
         topBar.anchoredPosition = target;
         bottomBar.anchoredPosition = target;
-        if(FireMissionController.FireMissonEnd)
+        if(!FireMissionController.FireMissonEnd)
         {
             SpawnAnimals(); // 🐾 Спавним зверей сразу после появления панелей
         }

@@ -5,11 +5,11 @@ public class AnimalRescueManager : MonoBehaviour
 {
     public static AnimalRescueManager Instance;
 
-    public int totalAnimals = 5;
+    public int totalAnimals = 1;
     public int rescuedAnimals = 0;
 
     [Header("UI")]
-    public TextMeshProUGUI rescueCounterText; // 👈 Подключи в инспекторе
+    public TextMeshProUGUI rescueCounterText; 
 
     private void Awake()
     {
@@ -29,7 +29,6 @@ public class AnimalRescueManager : MonoBehaviour
         if (rescuedAnimals >= totalAnimals)
         {
             Debug.Log("🎉 Все звери спасены!");
-            // Тут можно вызвать победу
         }
         if (rescuedAnimals >= totalAnimals)
         {

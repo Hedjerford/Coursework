@@ -35,11 +35,7 @@ public class LevelCompletionManager_SecondDay : MonoBehaviour
         buttonContinue.onClick.AddListener(() => panel.SetActive(false));
     }
 
-    private void Update()
-    {
-        CheckCompletion();
-    }
-    // Метод вызывается из FireMissionController
+
     public void OnFireTimerEnd()
     {
         fireEnded = true;
@@ -52,8 +48,8 @@ public class LevelCompletionManager_SecondDay : MonoBehaviour
         if (shown) return;
 
         bool fireComplete = fireEnded;
-        bool animalComplete = animalRescue != null && animalRescue.rescuedAnimals >= animalRescue.totalAnimals;
-        bool trashComplete = trashCounter != null && trashCounter.collectedCount >= 3;
+        bool animalComplete = animalRescue != null && animalRescue.rescuedAnimals >= 1;
+        bool trashComplete = trashCounter != null && trashCounter.collectedCount >= 1;
 
         animalsRescued = animalComplete;
         trashCollected = trashComplete;

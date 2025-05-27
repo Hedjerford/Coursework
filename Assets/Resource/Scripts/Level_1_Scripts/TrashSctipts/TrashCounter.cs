@@ -4,7 +4,7 @@ using TMPro;
 public class TrashCounter : MonoBehaviour
 {
     public TextMeshProUGUI trashText;
-    public int totalTrash = 5;
+    public int totalTrash = 8;
 
     public int collectedCount = 0;
 
@@ -21,9 +21,10 @@ public class TrashCounter : MonoBehaviour
         {
             AchievementManager.Instance.Unlock("—борщик");
         }
-        if (collectedCount >= 8)
+        if (collectedCount >= 1)
         {
             FindObjectOfType<LevelCompletionManager_SecondDay>()?.CheckCompletion();
+            FindObjectOfType<LevelCompletionManager>()?.MarkTrashCollected();
         }
 
     }
