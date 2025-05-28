@@ -30,7 +30,7 @@ public class LevelCompletionManager_Simple : MonoBehaviour
 
     public void RestartLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene("OilDay");
     }
 
     public void Next()

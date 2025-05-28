@@ -17,9 +17,16 @@ public class BoomPlacementController : MonoBehaviour
     private Vector3 currentPlacementPosition;
     public static bool TimerEnd = false;
 
+    private EmergencyDialogue DialogueScripts;
+    [TextArea(3, 10)] public string[] FailMission;
+    [TextArea(3, 10)] public string[] CompleteMission;
+
     private void Awake()
     {
         Instance = this;
+        DialogueScripts = FindObjectOfType<EmergencyDialogue>();
+        Debug.Log($"FailMission: {FailMission.Length} строк");
+        Debug.Log($"CompelteMission: {CompleteMission.Length} строк");
     }
 
     void Update()
@@ -97,8 +104,10 @@ public class BoomPlacementController : MonoBehaviour
                 RotateTangentialToCircle(boom.transform, center);
             }
         }
-        FindObjectOfType<LevelCompletionManager_Simple>()?.ShowCompletionPanel();
+        DialogueScripts.StartDialogueLines(CompleteMission, OnDialogueFinished);
+        
         Debug.Log("🟢 Круг завершён с дополнительными бонами.");
+
 
         // Удаляем все точки установки
         BoomPlacementPoint[] points = FindObjectsOfType<BoomPlacementPoint>();
@@ -109,6 +118,10 @@ public class BoomPlacementController : MonoBehaviour
 
         // Прячем UI
         BoomMissionUI.Instance?.Hide();
+    }
+    void OnDialogueFinished()
+    {
+        FindObjectOfType<LevelCompletionManager_Simple>()?.ShowCompletionPanel();
     }
 
     private void RotateTangentialToCircle(Transform obj, Vector3 center)
@@ -126,10 +139,10 @@ public class BoomPlacementController : MonoBehaviour
 
         BoomMissionUI.Instance?.Hide();
 
-        // Показываем обычную завершённую панель
-        FindObjectOfType<LevelCompletionManager_Simple>()?.ShowCompletionPanel();
+        //FindObjectOfType<LevelCompletionManager_Simple>()?.ShowCompletionPanel();
         TimerEnd = true;
         Debug.Log(TimerEnd);
+        DialogueScripts.StartDialogueLines(FailMission, OnDialogueFinished);
 
     }
 
