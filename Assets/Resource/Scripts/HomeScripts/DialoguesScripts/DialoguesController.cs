@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-
 public class DialogueController : MonoBehaviour
 {
     [TextArea(3, 10)] public string[] dialogueLines;
@@ -19,8 +18,8 @@ public class DialogueController : MonoBehaviour
 
     [Header("Диалоги")]
     [TextArea(3, 10)] public string[] firstVisitLines;
-    [TextArea(3, 10)] public string[] BadDialogue; // Если игрок плохо выполнил задание
-    [TextArea(3, 10)] public string[] GoodDialogue; // Если игрок выполнил задание хорошо
+    [TextArea(3, 10)] public string[] BadDialogue;
+    [TextArea(3, 10)] public string[] GoodDialogue;
     [TextArea(3, 10)] public string[] EndSecondLevelGood;
     [TextArea(3, 10)] public string[] EndSecondLevelBad;
     [TextArea(3, 10)] public string[] OilLevelGood;
@@ -28,48 +27,45 @@ public class DialogueController : MonoBehaviour
 
     private void Awake()
     {
-        //PlayerPrefs.DeleteAll();
+        // Только для тестов — удаление всех PlayerPrefs
+        // PlayerPrefs.DeleteAll();
+
         if (!PlayerPrefs.HasKey("HasLaunched"))
         {
-            PlayerPrefs.SetInt("HQDialogueStage", 1); // начальный диалог
-            PlayerPrefs.SetInt("HasLaunched", 1);     // пометка, что уже запускали
+            PlayerPrefs.SetInt("HQDialogueStage", 1);
+            PlayerPrefs.SetInt("HasLaunched", 1);
             PlayerPrefs.Save();
-            
         }
-  
 
-    int stage = PlayerPrefs.GetInt("HQDialogueStage", 1); // по умолчанию 1
+        int stage = PlayerPrefs.GetInt("HQDialogueStage", 1);
 
         switch (stage)
         {
-            case 1:
-                dialogueLines = firstVisitLines;
-                break;
-            case 2:
-                dialogueLines = BadDialogue;
-                break;
-            case 3:
-                dialogueLines = GoodDialogue;
-                break;
-            case 4:
-                dialogueLines = EndSecondLevelGood;
-                break;
-            case 5:
-                dialogueLines = EndSecondLevelBad;
-                break;
-            case 6:
-                dialogueLines = OilLevelGood;
-                break;
-            case 7:
-                dialogueLines = OilLevelBad;
-                break;
-            default:
-                dialogueLines = firstVisitLines;
-                break;
+            case 1: dialogueLines = firstVisitLines; break;
+            case 2: dialogueLines = BadDialogue; break;
+            case 3: dialogueLines = GoodDialogue; break;
+            case 4: dialogueLines = EndSecondLevelGood; break;
+            case 5: dialogueLines = EndSecondLevelBad; break;
+            case 6: dialogueLines = OilLevelGood; break;
+            case 7: dialogueLines = OilLevelBad; break;
+            default: dialogueLines = firstVisitLines; break;
         }
 
+        if (dialogueLines == null || dialogueLines.Length == 0)
+        {
+            Debug.LogError("dialogueLines не назначены или пусты!");
+            dialogueLines = new string[] { "..." };
+        }
+
+        if (dialogueText == null)
+        {
+            Debug.LogError("DialogueText не назначен в инспекторе!");
+        }
+
+        if (continueHint != null)
+            continueHint.SetActive(true);
+
         StartTypingLine();
-        continueHint.SetActive(true);
     }
 
     private void Update()
@@ -78,10 +74,10 @@ public class DialogueController : MonoBehaviour
         {
             if (isTyping)
             {
-                // Пропустить печать — показать всю строку сразу
                 StopCoroutine(typingCoroutine);
                 dialogueText.text = dialogueLines[currentLine];
                 isTyping = false;
+                continueHint.SetActive(true);
             }
             else
             {
@@ -92,23 +88,31 @@ public class DialogueController : MonoBehaviour
 
     void StartTypingLine()
     {
+        if (dialogueLines == null || currentLine >= dialogueLines.Length) return;
+
         typingCoroutine = StartCoroutine(TypeLine(dialogueLines[currentLine]));
-        continueHint.SetActive(false);
+
+        if (continueHint != null)
+            continueHint.SetActive(false);
     }
 
     IEnumerator TypeLine(string line)
     {
         isTyping = true;
-        dialogueText.text = "";
+        if (dialogueText != null)
+            dialogueText.text = "";
 
         foreach (char letter in line.ToCharArray())
         {
-            dialogueText.text += letter;
+            if (dialogueText != null)
+                dialogueText.text += letter;
+
             yield return new WaitForSeconds(typingSpeed);
         }
 
         isTyping = false;
-        continueHint.SetActive(true);
+        if (continueHint != null)
+            continueHint.SetActive(true);
     }
 
     void AdvanceDialogue()
@@ -117,39 +121,50 @@ public class DialogueController : MonoBehaviour
 
         if (currentLine < dialogueLines.Length)
         {
-            continueHint.SetActive(false);
+            if (continueHint != null)
+                continueHint.SetActive(false);
 
             StartTypingLine();
         }
         else
         {
-            dialogueText.text = "";
-            continueHint.SetActive(false);
+            if (dialogueText != null)
+                dialogueText.text = "";
+
+            if (continueHint != null)
+                continueHint.SetActive(false);
 
             int stage = PlayerPrefs.GetInt("HQDialogueStage", 1);
             var fader = FindObjectOfType<ScreenFader>();
 
-            if (stage == 1)
+            if (fader == null)
             {
-                AchievementManager.Instance.Unlock("Офисные будни");
-                fader.nextSceneName = "TutorialScene"; 
-                fader.FadeOutAndLoadScene();
+                Debug.LogError("ScreenFader не найден в сцене!");
+                return;
             }
-            else if (stage == 2 || stage == 3 )
-            {
-                fader.nextSceneName = "SecondDay"; 
-                fader.FadeOutAndLoadScene();
-            }
-            else if (stage == 4 || stage == 5)
-            {
-                fader.nextSceneName = "OilDay";
-                fader.FadeOutAndLoadScene();
-            }
-            else if (stage == 6 || stage == 7)
-            {
-                fader.FadeOutAndLoadScene();
-            }
-        }
 
+            switch (stage)
+            {
+                case 1:
+                    if (AchievementManager.Instance != null)
+                        AchievementManager.Instance.Unlock("Офисные будни");
+                    fader.nextSceneName = "TutorialScene";
+                    break;
+                case 2:
+                case 3:
+                    fader.nextSceneName = "SecondDay";
+                    break;
+                case 4:
+                case 5:
+                    fader.nextSceneName = "OilDay";
+                    break;
+                case 6:
+                case 7:
+                    fader.nextSceneName = ""; // если нужно остаться на текущей сцене
+                    break;
+            }
+
+            fader.FadeOutAndLoadScene();
+        }
     }
 }
