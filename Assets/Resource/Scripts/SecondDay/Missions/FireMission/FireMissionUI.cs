@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
@@ -16,7 +16,7 @@ public class FireMissionUI : MonoBehaviour
     public void SetTime(float secondsLeft)
     {
         int seconds = Mathf.CeilToInt(secondsLeft);
-        timeText.text = $"Осталось: {seconds} с";
+        timeText.text = $"РћСЃС‚Р°Р»РѕСЃСЊ: {seconds} СЃ";
     }
 
     public void SetVisible(bool visible)

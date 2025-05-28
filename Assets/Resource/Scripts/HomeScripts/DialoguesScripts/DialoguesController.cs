@@ -1,4 +1,4 @@
-using TMPro;
+п»їusing TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -17,10 +17,10 @@ public class DialogueController : MonoBehaviour
     private bool isTyping = false;
     public GameObject continueHint;
 
-    [Header("Диалоги")]
+    [Header("Р”РёР°Р»РѕРіРё")]
     [TextArea(3, 10)] public string[] firstVisitLines;
-    [TextArea(3, 10)] public string[] BadDialogue; // Если игрок плохо выполнил задание
-    [TextArea(3, 10)] public string[] GoodDialogue; // Если игрок выполнил задание хорошо
+    [TextArea(3, 10)] public string[] BadDialogue; // Р•СЃР»Рё РёРіСЂРѕРє РїР»РѕС…Рѕ РІС‹РїРѕР»РЅРёР» Р·Р°РґР°РЅРёРµ
+    [TextArea(3, 10)] public string[] GoodDialogue; // Р•СЃР»Рё РёРіСЂРѕРє РІС‹РїРѕР»РЅРёР» Р·Р°РґР°РЅРёРµ С…РѕСЂРѕС€Рѕ
     [TextArea(3, 10)] public string[] EndSecondLevelGood;
     [TextArea(3, 10)] public string[] EndSecondLevelBad;
     [TextArea(3, 10)] public string[] OilLevelGood;
@@ -31,14 +31,14 @@ public class DialogueController : MonoBehaviour
         //PlayerPrefs.DeleteAll();
         if (!PlayerPrefs.HasKey("HasLaunched"))
         {
-            PlayerPrefs.SetInt("HQDialogueStage", 1); // начальный диалог
-            PlayerPrefs.SetInt("HasLaunched", 1);     // пометка, что уже запускали
+            PlayerPrefs.SetInt("HQDialogueStage", 1); // РЅР°С‡Р°Р»СЊРЅС‹Р№ РґРёР°Р»РѕРі
+            PlayerPrefs.SetInt("HasLaunched", 1);     // РїРѕРјРµС‚РєР°, С‡С‚Рѕ СѓР¶Рµ Р·Р°РїСѓСЃРєР°Р»Рё
             PlayerPrefs.Save();
             
         }
   
 
-    int stage = PlayerPrefs.GetInt("HQDialogueStage", 1); // по умолчанию 1
+    int stage = PlayerPrefs.GetInt("HQDialogueStage", 1); // РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ 1
 
         switch (stage)
         {
@@ -78,7 +78,7 @@ public class DialogueController : MonoBehaviour
         {
             if (isTyping)
             {
-                // Пропустить печать — показать всю строку сразу
+                // РџСЂРѕРїСѓСЃС‚РёС‚СЊ РїРµС‡Р°С‚СЊ вЂ” РїРѕРєР°Р·Р°С‚СЊ РІСЃСЋ СЃС‚СЂРѕРєСѓ СЃСЂР°Р·Сѓ
                 StopCoroutine(typingCoroutine);
                 dialogueText.text = dialogueLines[currentLine];
                 isTyping = false;
@@ -131,7 +131,7 @@ public class DialogueController : MonoBehaviour
 
             if (stage == 1)
             {
-                AchievementManager.Instance.Unlock("Офисные будни");
+                AchievementManager.Instance.Unlock("РћС„РёСЃРЅС‹Рµ Р±СѓРґРЅРё");
                 fader.nextSceneName = "TutorialScene"; 
                 fader.FadeOutAndLoadScene();
             }

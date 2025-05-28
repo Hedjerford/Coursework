@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
@@ -22,7 +22,7 @@ public class RescueTeamPathfinder : MonoBehaviour
     {
         target = newTarget;
 
-        // Безопасность: path может быть null, если вызвали до Start()
+        // Р‘РµР·РѕРїР°СЃРЅРѕСЃС‚СЊ: path РјРѕР¶РµС‚ Р±С‹С‚СЊ null, РµСЃР»Рё РІС‹Р·РІР°Р»Рё РґРѕ Start()
         if (path == null)
             path = new NavMeshPath();
 
@@ -33,7 +33,7 @@ public class RescueTeamPathfinder : MonoBehaviour
     {
         canMove = enable;
 
-        // Отключить столкновения, если нужно
+        // РћС‚РєР»СЋС‡РёС‚СЊ СЃС‚РѕР»РєРЅРѕРІРµРЅРёСЏ, РµСЃР»Рё РЅСѓР¶РЅРѕ
         var rb = GetComponent<Rigidbody2D>();
         if (rb != null)
             rb.bodyType = enable ? RigidbodyType2D.Dynamic : RigidbodyType2D.Kinematic;
@@ -68,12 +68,12 @@ public class RescueTeamPathfinder : MonoBehaviour
         if (Vector3.Distance(transform.position, targetCorner) < 0.1f)
             currentCorner++;
 
-        // Зафиксировать Z
+        // Р—Р°С„РёРєСЃРёСЂРѕРІР°С‚СЊ Z
         Vector3 pos = transform.position;
         pos.z = 0f;
         transform.position = pos;
 
-        transform.rotation = Quaternion.identity; // без поворота
+        transform.rotation = Quaternion.identity; // Р±РµР· РїРѕРІРѕСЂРѕС‚Р°
     }
 
     public bool IsNearTarget()

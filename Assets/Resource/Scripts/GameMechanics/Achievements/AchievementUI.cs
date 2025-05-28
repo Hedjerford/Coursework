@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using TMPro;
 using System.Collections;
 
@@ -17,15 +17,15 @@ public class AchievementUI : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        hiddenPos = new Vector2(-300, -panel.rect.height - 100); // ниже экрана
-        visiblePos = new Vector2(-300, 0); // на экране
+        hiddenPos = new Vector2(-300, -panel.rect.height - 100); // РЅРёР¶Рµ СЌРєСЂР°РЅР°
+        visiblePos = new Vector2(-300, 0); // РЅР° СЌРєСЂР°РЅРµ
 
         panel.anchoredPosition = hiddenPos;
     }
 
     public void Show(string message)
     {
-        achievementText.text = $"Достижение получено:\n{message}";
+        achievementText.text = $"Р”РѕСЃС‚РёР¶РµРЅРёРµ РїРѕР»СѓС‡РµРЅРѕ:\n{message}";
         StopAllCoroutines();
         StartCoroutine(SlideInOut());
     }

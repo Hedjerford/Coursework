@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using TMPro;
 
 public class TrashCounter : MonoBehaviour
@@ -19,7 +19,7 @@ public class TrashCounter : MonoBehaviour
         UpdateUI();
         if (collectedCount >= 10)
         {
-            AchievementManager.Instance.Unlock("Сборщик");
+            AchievementManager.Instance.Unlock("РЎР±РѕСЂС‰РёРє");
         }
         if (collectedCount >= 1)
         {
@@ -31,6 +31,6 @@ public class TrashCounter : MonoBehaviour
 
     private void UpdateUI()
     {
-        trashText.text = $"Мусора собрано {collectedCount} / {totalTrash}";
+        trashText.text = $"РњСѓСЃРѕСЂР° СЃРѕР±СЂР°РЅРѕ {collectedCount} / {totalTrash}";
     }
 }

@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using TMPro;
 
 public class BirdCounter : MonoBehaviour
@@ -15,7 +15,7 @@ public class BirdCounter : MonoBehaviour
         UpdateUI();
         if (fedBirds == 5)
         {
-            AchievementManager.Instance.Unlock("Бренда Фрикер");
+            AchievementManager.Instance.Unlock("Р‘СЂРµРЅРґР° Р¤СЂРёРєРµСЂ");
         }
         FindObjectOfType<LevelCompletionManager>().MarkBirdFed();
 
@@ -24,11 +24,11 @@ public class BirdCounter : MonoBehaviour
     private void Start()
     {
         UpdateUI();
-        AchievementManager.Instance.Unlock("Начало...");
+        AchievementManager.Instance.Unlock("РќР°С‡Р°Р»Рѕ...");
     }
 
     private void UpdateUI()
     {
-        counterText.text = $"Птичек накормлено: {fedBirds} / {targetBirds}";
+        counterText.text = $"РџС‚РёС‡РµРє РЅР°РєРѕСЂРјР»РµРЅРѕ: {fedBirds} / {targetBirds}";
     }
 }

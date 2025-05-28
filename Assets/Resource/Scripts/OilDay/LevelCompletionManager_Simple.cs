@@ -7,7 +7,6 @@ public class LevelCompletionManager_Simple : MonoBehaviour
     [Header("UI")]
     public GameObject panel;
     public Button buttonFinish;
-    public Button buttonContinue;
 
     private bool shown = false;
 
@@ -15,8 +14,7 @@ public class LevelCompletionManager_Simple : MonoBehaviour
     {
         panel.SetActive(false);
 
-        buttonFinish.onClick.AddListener(() => panel.SetActive(true));
-        buttonContinue.onClick.AddListener(() => panel.SetActive(false));
+        buttonFinish.onClick.AddListener(Next);
     }
 
     // Вызывается, когда круг из бонов построен
@@ -26,11 +24,6 @@ public class LevelCompletionManager_Simple : MonoBehaviour
 
         shown = true;
         panel.SetActive(true);
-    }
-
-    public void RestartLevel()
-    {
-        SceneManager.LoadScene("OilDay");
     }
 
     public void Next()

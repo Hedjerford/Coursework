@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEngine;
 
 public class AchievementManager : MonoBehaviour
@@ -23,7 +23,7 @@ public class AchievementManager : MonoBehaviour
 
         unlocked.Add(name);
         AchievementUI.Instance?.Show(name);
-        Debug.Log($"À÷èâêà ðàçáëîêèðîâàíà: {name}");
+        Debug.Log($"ÐÑ‡Ð¸Ð²ÐºÐ° Ñ€Ð°Ð·Ð±Ð»Ð¾ÐºÐ¸Ñ€Ð¾Ð²Ð°Ð½Ð°: {name}");
     }
 
     public bool IsUnlocked(string name) => unlocked.Contains(name);

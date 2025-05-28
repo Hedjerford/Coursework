@@ -1,4 +1,4 @@
-using UnityEngine;
+п»їusing UnityEngine;
 using TMPro;
 
 public class BoomMissionUI : MonoBehaviour
@@ -25,7 +25,7 @@ public class BoomMissionUI : MonoBehaviour
         timeRemaining = duration;
         timerRunning = true;
 
-        boomCounterText.text = $"Установите боны: 0 / {total}";
+        boomCounterText.text = $"РЈСЃС‚Р°РЅРѕРІРёС‚Рµ Р±РѕРЅС‹: 0 / {total}";
         boomCounterText.gameObject.SetActive(true);
         timerText.gameObject.SetActive(true);
     }
@@ -33,7 +33,7 @@ public class BoomMissionUI : MonoBehaviour
     public void UpdateBoomCount(int count)
     {
         placed = count;
-        boomCounterText.text = $"Установите боны: {placed} / {total}";
+        boomCounterText.text = $"РЈСЃС‚Р°РЅРѕРІРёС‚Рµ Р±РѕРЅС‹: {placed} / {total}";
     }
 
     private void Update()
@@ -45,12 +45,12 @@ public class BoomMissionUI : MonoBehaviour
         {
             timeRemaining = 0;
             timerRunning = false;
-            timerText.text = "Время вышло!";
+            timerText.text = "Р’СЂРµРјСЏ РІС‹С€Р»Рѕ!";
             BoomPlacementController.Instance?.OnTimerEnd();
         }
         else
         {
-            timerText.text = $"Осталось: {Mathf.CeilToInt(timeRemaining)}";
+            timerText.text = $"РћСЃС‚Р°Р»РѕСЃСЊ: {Mathf.CeilToInt(timeRemaining)}";
         }
     }
 

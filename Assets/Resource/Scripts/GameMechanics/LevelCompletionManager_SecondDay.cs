@@ -21,9 +21,6 @@ public class LevelCompletionManager_SecondDay : MonoBehaviour
     public TrashCounter trashCounter;
 
     private bool fireEnded = false;
-    private bool animalsRescued = false;
-    private bool trashCollected = false;
-
     private bool shown = false;
 
     private void Start()
@@ -35,39 +32,44 @@ public class LevelCompletionManager_SecondDay : MonoBehaviour
         buttonContinue.onClick.AddListener(() => panel.SetActive(false));
     }
 
-
     public void OnFireTimerEnd()
     {
         fireEnded = true;
-        
     }
 
-    // Вызывается из AnimalRescueManager
-    public void CheckCompletion()
+    // Новый единый метод проверки
+    private bool IsAllObjectivesCompleted()
     {
-        if (shown) return;
-
         bool fireComplete = fireEnded;
         bool animalComplete = animalRescue != null && animalRescue.rescuedAnimals >= 1;
         bool trashComplete = trashCounter != null && trashCounter.collectedCount >= 1;
 
-        animalsRescued = animalComplete;
-        trashCollected = trashComplete;
+        return fireComplete && animalComplete && trashComplete;
+    }
 
-        bool allCompleted = fireComplete && animalComplete && trashComplete;
-        bool anyCompleted = fireComplete || animalComplete || trashComplete;
+    // Также можно сделать метод частичного выполнения
+    private bool IsAnyObjectiveCompleted()
+    {
+        bool fireComplete = fireEnded;
+        bool animalComplete = animalRescue != null && animalRescue.rescuedAnimals >= 1;
+        bool trashComplete = trashCounter != null && trashCounter.collectedCount >= 1;
+
+        return fireComplete || animalComplete || trashComplete;
+    }
+
+    public void CheckCompletion()
+    {
+        if (shown) return;
 
         shown = true;
 
-        if (allCompleted)
+        if (IsAllObjectivesCompleted())
         {
-            // ✅ Все миссии выполнены — сразу показываем звёзды
-            ShowStars();
+            ShowStars(); // все выполнено
         }
-        else if (anyCompleted)
+        else if (IsAnyObjectiveCompleted())
         {
-            // ⚠️ Частично выполнено — показываем обычную панель
-            panel.SetActive(true);
+            panel.SetActive(true); // частично выполнено
         }
     }
 
@@ -75,7 +77,6 @@ public class LevelCompletionManager_SecondDay : MonoBehaviour
     {
         FindObjectOfType<GameTimer>()?.StopTimer();
 
-        // ❗ Показываем сразу панель со звездами
         panel.SetActive(false);
         starsPanel.SetActive(true);
 
@@ -98,7 +99,7 @@ public class LevelCompletionManager_SecondDay : MonoBehaviour
 
     public void Continue()
     {
-        if (fireEnded && animalsRescued && trashCollected)
+        if (IsAllObjectivesCompleted())
         {
             PlayerPrefs.SetInt("HQDialogueStage", 4);
         }

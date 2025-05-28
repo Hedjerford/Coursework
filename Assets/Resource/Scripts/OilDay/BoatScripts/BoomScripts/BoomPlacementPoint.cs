@@ -1,14 +1,17 @@
-using UnityEngine;
+п»їusing UnityEngine;
 
 public class BoomPlacementPoint : MonoBehaviour
 {
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("Boat"))
         {
             BoomPlacementController.Instance?.SetPlacementAllowed(true, transform.position);
-            InteractionHintController.Instance.hintText.text = "Нажмите E, чтобы установить бон";
-            InteractionHintController.Instance.ShowHint(true);
+            if (InteractionHintController.Instance != null)
+            {
+                InteractionHintController.Instance.hintText.text = "РќР°Р¶РјРёС‚Рµ E, С‡С‚РѕР±С‹ СѓСЃС‚Р°РЅРѕРІРёС‚СЊ Р±РѕРЅ";
+                InteractionHintController.Instance.ShowHint(true);
+            }
         }
     }
 

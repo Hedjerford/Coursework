@@ -5,7 +5,7 @@ public class AnimalRescueManager : MonoBehaviour
 {
     public static AnimalRescueManager Instance;
 
-    public int totalAnimals = 1;
+    public int totalAnimals = 5;
     public int rescuedAnimals = 0;
 
     [Header("UI")]
