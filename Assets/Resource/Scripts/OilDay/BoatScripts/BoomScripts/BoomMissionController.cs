@@ -137,7 +137,7 @@ public class BoomPlacementController : MonoBehaviour
     {
         BoomMissionUI.Instance?.StartMissionUI(totalBoomsToPlace, missionDuration);
         Debug.Log("▶ Миссия с бонами официально началась.");
-        AchievementManager.Instance.Unlock("Начальный судоводитель");
+        AchievementManager.Instance.Unlock("Серьезный разговор");
     }
 
 }

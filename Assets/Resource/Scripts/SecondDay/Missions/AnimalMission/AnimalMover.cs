@@ -72,6 +72,7 @@ public class AnimalMover : MonoBehaviour
         }
     }
 
+    // Ловушка может остаться триггером
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Trap") && Vector3.Distance(other.transform.position, finalTrap.position) < 0.5f)
@@ -83,15 +84,20 @@ public class AnimalMover : MonoBehaviour
                 rb.linearVelocity = Vector2.zero;
             }
         }
-        else if (other.CompareTag("Player"))
+    }
+
+    // Касание игрока через физику
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Player"))
         {
             playerNearby = true;
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
+    void OnCollisionExit2D(Collision2D collision)
     {
-        if (other.CompareTag("Player"))
+        if (collision.collider.CompareTag("Player"))
         {
             playerNearby = false;
         }
@@ -105,11 +111,10 @@ public class AnimalMover : MonoBehaviour
         isRescued = true;
         goingToTrap = false;
 
-        // Случайная точка поблизости
+        // Случайная точка побега
         Vector3 randomDirection = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0f);
         Vector3 candidatePosition = transform.position + randomDirection;
 
-        // Пытаемся найти ближайшую точку на NavMesh
         if (NavMesh.SamplePosition(candidatePosition, out NavMeshHit hit, 3f, NavMesh.AllAreas))
         {
             GameObject temp = new GameObject("EscapeTarget");
@@ -121,10 +126,7 @@ public class AnimalMover : MonoBehaviour
             Debug.LogWarning("❗ Не удалось найти точку побега на NavMesh");
         }
 
-        // Обновим счётчик спасённых зверей, если используешь
         if (AnimalRescueManager.Instance != null)
             AnimalRescueManager.Instance.RegisterRescue();
     }
-
-
 }

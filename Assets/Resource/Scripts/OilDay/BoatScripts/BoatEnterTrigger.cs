@@ -52,7 +52,7 @@ public class BoatEnterTrigger : MonoBehaviour
     void EnterBoat()
     {
         FindObjectOfType<SmoothFollow>().SetZoom(6f);
-
+        AchievementManager.Instance.Unlock("Начальный судоводитель");
         Debug.Log("🛥 Игрок сел в катер");
         playerInBoat = true;
 

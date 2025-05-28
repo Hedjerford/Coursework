@@ -32,7 +32,7 @@ public class NPCDialogueTrigger : MonoBehaviour
 
     void OnDialogueFinished()
     {
-        AchievementManager.Instance.Unlock("Серьезный разговор");
+        
         Debug.Log("📢 Диалог с НПС завершён");
 
         BoomPlacementController.Instance?.StartBoomMission();
