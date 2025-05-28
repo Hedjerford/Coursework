@@ -121,7 +121,7 @@ public class FireMissionController : MonoBehaviour
         InteractionHintController.Instance?.ShowHint(false);
 
         StartCoroutine(SergeyDialogueThenNext(successDialogueLines));
-        AchievementManager.Instance.Unlock("Пожарные со стажем");;
+        AchievementManager.Instance.Unlock("Пожарные со стажем");
         LevelCompletionManager_SecondDay manager = FindObjectOfType<LevelCompletionManager_SecondDay>();
         FindObjectOfType<LevelCompletionManager_SecondDay>()?.CheckCompletion();
 

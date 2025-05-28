@@ -29,6 +29,7 @@ public class AnimalRescueManager : MonoBehaviour
         if (rescuedAnimals >= totalAnimals)
         {
             Debug.Log("🎉 Все звери спасены!");
+            AchievementManager.Instance.Unlock("Эйс Вентура");
         }
         if (rescuedAnimals >= totalAnimals)
         {

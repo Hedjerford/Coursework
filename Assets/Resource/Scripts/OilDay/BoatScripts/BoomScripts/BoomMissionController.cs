@@ -62,6 +62,7 @@ public class BoomPlacementController : MonoBehaviour
 
     private void FinalizeCircle()
     {
+        AchievementManager.Instance.Unlock("Великая стена");
         Debug.Log("✅ Все боны установлены вручную. Строим круг...");
 
         Vector3 center = BoomZoneTrigger.Instance.GetZoneCenter();
@@ -136,6 +137,7 @@ public class BoomPlacementController : MonoBehaviour
     {
         BoomMissionUI.Instance?.StartMissionUI(totalBoomsToPlace, missionDuration);
         Debug.Log("▶ Миссия с бонами официально началась.");
+        AchievementManager.Instance.Unlock("Начальный судоводитель");
     }
 
 }

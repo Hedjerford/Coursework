@@ -131,6 +131,7 @@ public class DialogueController : MonoBehaviour
 
             if (stage == 1)
             {
+                AchievementManager.Instance.Unlock("ќфисные будни");
                 fader.nextSceneName = "TutorialScene"; 
                 fader.FadeOutAndLoadScene();
             }
